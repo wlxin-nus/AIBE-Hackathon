@@ -1,0 +1,18 @@
+{
+  "name": "frontend-design",
+  "repository": "https://github.com/anthropics/skills",
+  "sourcePath": "skills/frontend-design",
+  "commit": "ca45fc496a3436251f191354091d557da31c15b5",
+  "installedAt": "2026-10-30T20:27:01.0356172+08:00",
+  "scope": "project",
+  "files": [
+    {
+      "file": ".claude/skills/frontend-design/LICENSE.txt",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "file": ".claude/skills/frontend-design/SKILL.md",
+      "sha256": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3"
+    }
+  ]
+}

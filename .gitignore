@@ -1,0 +1,22 @@
+# Generated data and caches
+.cache/
+outputs/
+node_modules/
+dist/
+build/
+.venv/
+__pycache__/
+*.pyc
+
+# Local secrets and settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.claude/settings.local.json
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+*.log
