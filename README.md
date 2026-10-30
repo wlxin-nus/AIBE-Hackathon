@@ -37,6 +37,14 @@ node --test .\tests\claude-runner.test.cjs
 
 Codex 沙箱中出现 DNS 失败或本机页面访问超时，而普通 PowerShell 正常时，应在允许的主机网络环境执行这些联网或本机服务检查；不要因此修改全局 DNS、代理或安全设置。
 
+需要绕过统一封装、直接验证 PowerShell 到 Claude Code 的通讯时：
+
+```powershell
+Get-Content -LiteralPath .\tasks\ping.md -Raw | claude -p --model claude-opus-5-5 --output-format json --no-session-persistence --tools Read --strict-mcp-config
+```
+
+直接调用允许文件读取，禁用写入、命令和 MCP；统一脚本的默认工具列表仍为空，并提供超时和结果归档。2026-10-30 20:43 的直接 PowerShell、CMD、原脚本及完整联网预检均通过，详见验收记录。
+
 ## 内容位置与边界
 
 - `tasks/`：可复用任务输入；`docs/`：比赛清单、任务单、技能版本及验收结论。
