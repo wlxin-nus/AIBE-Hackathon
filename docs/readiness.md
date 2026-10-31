@@ -5,6 +5,9 @@
 | 项目 | 状态 | 实际证据 |
 | --- | --- | --- |
 | 项目目录与本地 Git | 已建立 | 项目文件、任务、技能和输出均在根目录内；生成结果与缓存不纳入 Git |
+| GitHub 远程同步（2026-10-31） | 通过 | 私有仓库 `wlxin-nus/AIBE-Hackathon`，本地 `main` 跟踪 `origin/main`，已推送并核对提交一致 |
+| Vercel 仓库访问（2026-10-31） | 通过 | 用户已完成 GitHub 应用安装，仅选择本仓库；Vercel 导入列表可见 `AIBE-Hackathon` |
+| Vercel 项目与部署 | 待建立 | 当前仅完成仓库访问授权，尚未创建应用项目、配置自动构建或发布网站 |
 | Node / npm / Git / Claude Code | 通过 | Node 22.14.0、npm 10.9.2、Git 2.45.2、Claude Code 2.1.314；Node 满足已核对的 Vite 要求 |
 | Claude 本地认证 | 通过 | 现有 Claude Pro 登录可读取；未复制凭据、未更改登录状态 |
 | PowerShell 离线预检 | 通过 | Windows PowerShell 5.1 与 PowerShell 7 新进程均通过；另用系统持久 PATH 复测通过，不依赖 Codex 注入的工具路径 |
