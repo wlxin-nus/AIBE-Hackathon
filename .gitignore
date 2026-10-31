@@ -1,6 +1,7 @@
 # Generated data and caches
 .cache/
 outputs/
+.vercel/
 node_modules/
 dist/
 build/

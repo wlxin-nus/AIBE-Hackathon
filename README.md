@@ -2,6 +2,14 @@
 
 这里只准备开发工具与协作流程。比赛题目公布后再创建应用；默认 React + TypeScript + Vite + npm，本机浏览器演示优先。
 
+## 代码仓库与同步
+
+GitHub 私有仓库：[wlxin-nus/hackson_Yuqian](https://github.com/wlxin-nus/hackson_Yuqian)。本地 `main` 跟踪 `origin/main`，已有准备工作提交历史完整保留。
+
+后续按可运行或可验证的进度保存提交，再通过 `git push` 同步至 GitHub。`git commit` 保存本地版本，`git push` 上传提交；网站部署在配置 Vercel 项目后另行验证。
+
+缓存、诊断输出、本机 Vercel 配置和密钥文件由忽略规则排除。推送前检查本次变更，不提交凭据。
+
 ## 快速开始
 
 在此项目根目录打开 PowerShell（Windows PowerShell 5.1 或 PowerShell 7 均可），执行：
