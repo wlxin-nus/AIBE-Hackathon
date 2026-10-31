@@ -113,12 +113,14 @@ function render(){
  scene.appendChild(occupantLayer);
  for(const person of participants){
    if(!person.position)continue;
-   const p=[person.position.x*1700,person.position.y*1100,76];
-   const q=project(p), floor=project([p[0],p[1],1]);
+   const p=[person.position.x*1700,person.position.y*1100,1];
+   const floor=project(p), q=[floor[0],floor[1]-18];
    occupantLayer.appendChild(el('ellipse',{cx:floor[0],cy:floor[1],rx:25*camera.s,ry:12*camera.s,fill:person.colour,opacity:.2}));
-   occupantLayer.appendChild(el('line',{x1:floor[0],y1:floor[1],x2:q[0],y2:q[1],stroke:person.colour,'stroke-width':2,opacity:.6}));
-   occupantLayer.appendChild(el('circle',{cx:q[0],cy:q[1],r:9,fill:person.colour,stroke:'#fff','stroke-width':3}));
-   label(occupantLayer,[p[0],p[1],110],person.alias,'occupant-label');
+   const silhouette=el('g',{transform:`translate(${q[0]},${q[1]})`,fill:'#fff',stroke:'#202020','stroke-width':1.5,'stroke-linejoin':'round'});
+   silhouette.appendChild(el('circle',{cx:0,cy:-26,r:6}));
+   silhouette.appendChild(el('path',{d:'M-5 -18 Q-10 -18 -12 -12 L-15 -2 Q-15 1 -12 1 L-7 -8 L-7 0 L-6 16 Q-4 19 -1 16 L0 5 L1 16 Q4 19 6 16 L7 0 L7 -8 L12 1 Q15 1 15 -2 L12 -12 Q10 -18 5 -18 Z'}));
+   occupantLayer.appendChild(silhouette);
+   const name=el('text',{x:q[0],y:q[1]-39,class:'occupant-label'});name.textContent=person.alias;occupantLayer.appendChild(name);
  }
  document.getElementById('angle').textContent=`${Math.round(pitch)}° ELEVATION`;
 }

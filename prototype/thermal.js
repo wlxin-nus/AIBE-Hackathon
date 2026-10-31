@@ -16,9 +16,8 @@ function zones(people){return fcus.map((point,i)=>{
  return {point,members,target,conflict,idle:false,lower,upper,unmet:members.filter(p=>target<p.profile.minimum||target>p.profile.maximum).length};
 });}
 function temperature(x,y,groups){let total=0,sum=0;groups.forEach(g=>{const weight=1/Math.pow(Math.hypot(x-g.point[0],y-g.point[1])+70,3);sum+=weight*g.target;total+=weight;});return total?sum/total:25;}
-function colour(t){const stops=[[18,[71,107,188]],[22,[75,161,198]],[25,[151,196,164]],[27,[233,191,107]],[30,[205,99,77]]];t=Math.max(18,Math.min(30,t));let hi=stops.findIndex(s=>s[0]>=t);if(hi===0)return 'rgb('+stops[0][1].join(',')+')';const [a,ca]=stops[hi-1],[b,cb]=stops[hi];return 'rgb('+ca.map((v,i)=>Math.round(v+(cb[i]-v)*(t-a)/(b-a))).join(',')+')';}
+function colour(t){const stops=[[20,[71,107,188]],[22,[75,161,198]],[25,[151,196,164]],[27,[233,191,107]],[30,[205,99,77]]];t=Math.max(20,Math.min(30,t));let hi=stops.findIndex(s=>s[0]>=t);if(hi===0)return 'rgb('+stops[0][1].join(',')+')';const [a,ca]=stops[hi-1],[b,cb]=stops[hi];return 'rgb('+ca.map((v,i)=>Math.round(v+(cb[i]-v)*(t-a)/(b-a))).join(',')+')';}
 function inside(x,y){let result=false;for(let i=0,j=outline.length-1;i<outline.length;j=i++){const [xi,yi]=outline[i],[xj,yj]=outline[j];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))result=!result;}return result;}
 const api={fcus,desks,outline,seats,nearest,zones,temperature,colour,inside};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.ComfortThermal=api;
 })(typeof window!=='undefined'?window:globalThis);
-

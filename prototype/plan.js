@@ -33,8 +33,9 @@ function update(next){
  groups.forEach((g,i)=>{equipment.append(make('rect',{x:g.point[0]-44,y:g.point[1]-44,width:88,height:88,rx:8,fill:t.colour(g.target),'fill-opacity':.7,stroke:g.conflict?'#a74935':'#58755f','stroke-width':g.conflict?6:3,'stroke-dasharray':g.idle?'8 5':'none'}));equipment.append(text(g.point[0],g.point[1]-58,'F'+String(i+1).padStart(2,'0')+' · '+g.target.toFixed(1)+'°',25));});
  for(const p of people){if(!p.position)continue;const x=p.position.x*1700,y=p.position.y*1100;
  const i=t.nearest(p.position),f=t.fcus[i];markers.append(make('line',{x1:x,y1:y,x2:f[0],y2:f[1],stroke:p.colour,'stroke-width':3,'stroke-dasharray':'9 6',opacity:.7}));
- markers.append(make('circle',{cx:x,cy:y,r:15,fill:p.colour,stroke:'#fff','stroke-width':4}));
- markers.append(text(x,y+44,p.alias,25));
+ const person=make('g',{transform:'translate('+x+','+y+') scale(1.8)',fill:'#fff',stroke:'#202020','stroke-width':1.5,'stroke-linejoin':'round'});
+ person.append(make('circle',{cx:0,cy:-26,r:6}),make('path',{d:'M-5 -18 Q-10 -18 -12 -12 L-15 -2 Q-15 1 -12 1 L-7 -8 L-7 0 L-6 16 Q-4 19 -1 16 L0 5 L1 16 Q4 19 6 16 L7 0 L7 -8 L12 1 Q15 1 15 -2 L12 -12 Q10 -18 5 -18 Z'}));markers.append(person);
+ markers.append(text(x,y+60,p.alias,25));
  }
  seatNodes.forEach(({seat,g,rect})=>{const active=seat.id===selected;rect.setAttribute('stroke',active?'#7c3656':'#829274');rect.setAttribute('stroke-width',active?'7':'3');g.setAttribute('aria-pressed',String(active));g.setAttribute('aria-disabled',String(!enabled));});
 }
