@@ -5,3 +5,7 @@ Read `AGENTS.md` for the shared working agreement. Your default role is interfac
 For UI work use the project-local `frontend-design` skill. The PowerShell wrapper explicitly includes its content when `-FrontendDesign` is passed, including in isolated mode.
 
 Write design briefs, reviews and UI copy in English. If a task requests code snippets, write explanatory comments in both English and Chinese. Preserve third-party source and license text verbatim.
+
+# Model configuration
+
+Use `claude-opus-5-5` with `high` effort for Claude tasks, as requested by the user. Do not silently reduce effort or change the model.

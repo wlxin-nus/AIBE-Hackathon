@@ -73,11 +73,12 @@ function summarize(run) {
 async function main() {
   const { values } = parseArgs({ options: {
     'prompt-file': { type: 'string' }, 'task-id': { type: 'string' },
-    'timeout-seconds': { type: 'string', default: '180' }, mode: { type: 'string', default: 'isolated' },
+    'timeout-seconds': { type: 'string', default: '180' }, mode: { type: 'string', default: 'isolated' }, effort: { type: 'string', default: 'high' },
     'claude-executable': { type: 'string' }, 'frontend-design': { type: 'boolean', default: false }
   } });
   if (!/^[a-z0-9][a-z0-9_-]{0,63}$/i.test(values['task-id'] || '')) throw new Error('Invalid task ID.');
   if (!['isolated', 'normal'].includes(values.mode)) throw new Error('Invalid invocation mode.');
+  if (!['low', 'medium', 'high'].includes(values.effort)) throw new Error('Invalid effort.');
   const timeoutSeconds = Number(values['timeout-seconds']);
   if (!Number.isInteger(timeoutSeconds) || timeoutSeconds < 1 || timeoutSeconds > 180) throw new Error('Timeout must be 1–180 seconds.');
   const promptFile = inputPath(values['prompt-file']);
@@ -89,13 +90,13 @@ async function main() {
   fs.mkdirSync(tempDir, { recursive: true });
   let instructions = fs.readFileSync(path.join(ROOT, 'AGENTS.md'), 'utf8');
   if (values['frontend-design']) instructions += '\n\n' + fs.readFileSync(path.join(ROOT, '.claude', 'skills', 'frontend-design', 'SKILL.md'), 'utf8');
-  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', MODEL, '--effort', 'medium', '--tools', '', '--strict-mcp-config', '--no-session-persistence', '--permission-prompts', 'none', '--append-system-prompt', instructions];
+  const args = ['-p', '--output-format', 'stream-json', '--verbose', '--model', MODEL, '--effort', values.effort, '--tools', '', '--strict-mcp-config', '--no-session-persistence', '--permission-prompts', 'none', '--append-system-prompt', instructions];
   if (values.mode === 'isolated') args.push('--safe-mode');
   const run = await execute(values['claude-executable'] || 'claude', args, prompt, {
     timeoutMs: timeoutSeconds * 1000,
     env: { ...process.env, TMP: tempDir, TEMP: tempDir, TMPDIR: tempDir, DISABLE_AUTOUPDATER: '1' }
   });
-  const result = { ...summarize(run), taskId: values['task-id'], mode: values.mode, frontendDesign: values['frontend-design'], completedAt: new Date().toISOString(), outputDir };
+  const result = { ...summarize(run), taskId: values['task-id'], mode: values.mode, effort: values.effort, frontendDesign: values['frontend-design'], completedAt: new Date().toISOString(), outputDir };
   if (result.status === 'timeout') result.error = `No completed answer within ${timeoutSeconds}s. CLI startup alone is not a successful connection.\n${result.error}`.trim();
   fs.writeFileSync(path.join(outputDir, 'events.jsonl'), redact(run.stdout));
   fs.writeFileSync(path.join(outputDir, 'stderr.log'), redact(run.stderr));

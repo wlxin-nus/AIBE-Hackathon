@@ -1,6 +1,6 @@
 # AIBE-Hackathon
 
-Preparation tools and the collaboration workflow for an AI for the Built Environment and Urbanism hackathon. The competition application will be created after the challenge is announced. The default stack is React, TypeScript, Vite and npm, with a local browser demo first.
+Tools and prototypes for an AI for the Built Environment and Urbanism hackathon. The selected challenge is **People-Centred Low-Carbon Portfolios**. The current experiment connects two iPhones to a shared workplace-comfort canvas. The default application stack is React, TypeScript, Vite and npm; the first connectivity experiment uses Node.js without additional dependencies.
 
 **Hard development deadline: before 14:00 on 2026-10-31, Singapore time (UTC+8, the same as Shanghai).** Target a demo-ready version by 13:45 to retain a final submission buffer. This deadline applies to both Codex and Claude work.
 
@@ -26,6 +26,20 @@ Caches, diagnostics, local Vercel configuration and secret files are excluded by
 ## Quick start
 
 Open Windows PowerShell 5.1 or PowerShell 7 in the project root.
+
+Start the current two-phone experiment:
+
+```powershell
+node .\prototype\server.cjs
+```
+
+Open the desktop and phone URLs printed by the server. It generates a new room code on each start. Manual position synchronization has been verified on both iPhones; automatic indoor positioning remains unverified. Open `/concept` for the static Claude Opus 5.5 high design proposal. See [phase-one findings and next steps](docs/comfort-phase-one.md) and [design provenance](design/README.md).
+
+Run the experiment and tool tests:
+
+```powershell
+node --test .\tests\claude-runner.test.cjs .\tests\comfort-probe.test.cjs
+```
 
 Run the offline preflight to check versions, local authentication and skill integrity without calling a model:
 
@@ -61,7 +75,7 @@ With PowerShell 7, replace `powershell` with `pwsh`. Scripts locate the project 
 
 ## Claude invocation contract
 
-- The model is fixed to `claude-opus-5-5`. The default isolated mode exposes no tools or MCP servers and saves no Claude session. Codex saves the returned output.
+- The model is fixed to `claude-opus-5-5`, with `high` effort by default as requested. Keep this model and effort unless the user changes the preference. The default isolated mode exposes no tools or MCP servers and saves no Claude session. Codex saves the returned output.
 - `-FrontendDesign` explicitly includes the project-local official skill, including in isolated mode. The project instructions are always included explicitly.
 - `-TimeoutSec` accepts 1-180 seconds and defaults to 180. The runner closes standard input, terminates timed-out child processes and exits with a nonzero code on failure.
 - Use `-Mode normal` only to diagnose differences in existing user settings or plugins. Model tools and MCP remain disabled; this is not the default design workflow.
@@ -74,13 +88,14 @@ If DNS or localhost access fails inside the Codex sandbox but works in an ordina
 To bypass the wrapper and check direct PowerShell communication with Claude Code:
 
 ```powershell
-Get-Content -LiteralPath .\tasks\ping.md -Raw | claude -p --model claude-opus-5-5 --output-format json --no-session-persistence --tools Read --strict-mcp-config
+Get-Content -LiteralPath .\tasks\ping.md -Raw | claude -p --model claude-opus-5-5 --effort high --output-format json --no-session-persistence --tools Read --strict-mcp-config
 ```
 
 This direct check allows file reads but exposes no write, command or MCP tools. The wrapper's default tool list remains empty and adds timeout handling and output archiving. Direct PowerShell, CMD, the original wrapper and the complete online preflight all passed on 2026-10-30 at 20:43 UTC+8; see the readiness record.
 
 ## Workspace contents
 
+- `prototype/`: local two-phone comfort experiment. `design/`: the static interface proposal for review.
 - `tasks/`: reusable task inputs. `docs/`: competition checklists, the challenge template, skill provenance and readiness evidence.
 - `scripts/`: invocation, preflight and the temporary web check. `tests/`: offline checks of important failure paths.
 - `.claude/skills/frontend-design/`: the only newly installed skill. Its official source, pinned commit and SHA256 hashes are recorded in `docs/skills-lock.json`.

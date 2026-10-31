@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common Climate design concept</title>
+<style>
+:root{--ink:#17343A;--muted:#55706F;--teal:#0E7C7B;--coral:#C8665F;--coral-ink:#9C4039;--tint:#F8E3DF;--line:#BCCBCA;--paper:#F8FBFA;--ground:#E4ECEA}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--ground);color:var(--ink);font:15px/1.4 'Segoe UI',system-ui,sans-serif}
+main{display:grid;grid-template-columns:1050px 300px;gap:30px;align-items:center}
+p,h1,h2,ul,dl,dd{margin:0;padding:0}
+.app{background:var(--paper);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.top{display:flex;align-items:baseline;gap:14px;padding:16px 30px 6px 48px}
+h1{font-size:22px;font-weight:600}
+.top span{color:var(--muted)}
+.top .concept{margin-left:auto;font-size:13px}
+svg{display:block;max-width:100%;height:auto}
+svg text{fill:var(--ink);font-size:12px}
+.n{font-size:14px;font-weight:600}
+.t{font-size:38px;font-weight:300}
+.m{fill:var(--muted)}
+.c{fill:var(--coral-ink);font-weight:600}
+.b{font-weight:600}
+.zone{fill:#EFF5F3;stroke:var(--line)}
+.alert{fill:#FBF3F0;stroke:var(--coral);stroke-width:1.5;stroke-dasharray:7 5}
+.wall{fill:none;stroke:var(--ink);stroke-width:3;stroke-linejoin:round}
+.lead{fill:none;stroke-width:1.2}
+.halo{mix-blend-mode:multiply}
+.lower{display:grid;grid-template-columns:600px 1fr;gap:40px;padding:14px 30px 20px 48px;border-top:1px solid var(--line)}
+h2{font-size:14px;font-weight:600;margin-bottom:6px}
+li{display:grid;grid-template-columns:110px 1fr auto auto;gap:14px;align-items:center;min-height:42px;list-style:none;border-top:1px solid var(--line)}
+li strong{font-weight:600}
+li span{color:var(--muted);font-size:13px}
+li b{font-size:20px;font-weight:300}
+li .warn{color:var(--coral-ink)}
+.note{margin-top:8px;font-size:13px;color:var(--muted)}
+button{font:inherit;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:7px 12px}
+button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.review{color:#fff;background:var(--coral-ink);border-color:var(--coral-ink);font-size:13px;padding:5px 10px}
+dl div{display:grid;grid-template-columns:86px 1fr;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:13px}
+dt{font-weight:600}
+dd{color:var(--muted)}
+.energy{padding-top:8px;border-top:1px solid var(--line);font-weight:600}
+.phone{height:690px;padding:9px;background:var(--ink);border-radius:42px}
+.screen{height:100%;padding:30px 20px 20px;display:flex;flex-direction:column;background:var(--paper);border-radius:33px}
+.label{font-size:13px;color:var(--muted)}
+.alias{font-size:24px;font-weight:600;margin-bottom:16px}
+.big{font-size:54px;font-weight:300;line-height:1.1;color:var(--teal)}
+.range{margin:10px 0 2px}
+.range text{font-size:11px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:6px 0}
+.seg button{padding:7px 2px;font-size:13px}
+.seg .on{color:#fff;background:var(--teal);border-color:var(--teal)}
+.gap{margin-top:16px}
+.notice{margin-top:14px;padding:10px 12px;border-radius:8px;background:var(--tint);color:var(--coral-ink);font-size:13px}
+.actions{margin-top:auto;display:grid;gap:8px}
+@media (max-width:1400px){main{grid-template-columns:minmax(0,1050px);padding:20px;justify-items:center}.lower{grid-template-columns:1fr}.top{flex-wrap:wrap;padding-left:20px}.phone{width:300px}}
+@media (max-width:620px){li{grid-template-columns:1fr auto}.lower{padding-left:20px}}
+</style>
+</head>
+<body>
+<main>
+<section class="app" aria-label="Building dashboard">
+<header class="top">
+<h1>Common Climate</h1>
+<span>Level 7 east wing</span>
+<span class="concept">Design concept · illustrative data</span>
+</header>
+<svg viewBox="0 0 1050 500" width="1050" height="500" role="img" aria-label="Floor plan of three VAV zones. Heron and Ibis are both in Central bay, and their comfort ranges do not overlap.">
+<defs>
+<radialGradient id="ht"><stop offset="0" stop-color="#0E7C7B" stop-opacity=".38"/><stop offset=".6" stop-color="#0E7C7B" stop-opacity=".15"/><stop offset="1" stop-color="#0E7C7B" stop-opacity="0"/></radialGradient>
+<radialGradient id="hc"><stop offset="0" stop-color="#C8665F" stop-opacity=".4"/><stop offset=".6" stop-color="#C8665F" stop-opacity=".16"/><stop offset="1" stop-color="#C8665F" stop-opacity="0"/></radialGradient>
+<pattern id="gap" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#F8E3DF"/><rect width="2.5" height="7" fill="#C8665F"/></pattern>
+<g id="desk" fill="#fff" stroke="#BCCBCA"><rect width="40" height="18"/><rect x="42" width="40" height="18"/></g>
+</defs>
+<text x="48" y="30" class="m">Three VAV zones</text>
+<circle cx="768" cy="26" r="8" fill="url(#ht)"/>
+<text x="1002" y="30" text-anchor="end" class="m">Presence, not measured temperature</text>
+<path class="zone" d="M48 46H320V230H280V330H48Z"/>
+<path class="zone" d="M724 46H1002V264L936 330H724Z"/>
+<path class="alert" d="M320 46H724V330H280V230H320Z"/>
+<use href="#desk" x="72" y="214"/><use href="#desk" x="172" y="214"/><use href="#desk" x="72" y="276"/>
+<use href="#desk" x="770" y="214"/><use href="#desk" x="870" y="214"/><use href="#desk" x="770" y="276"/>
+<use href="#desk" x="430" y="236"/><use href="#desk" x="566" y="270"/><use href="#desk" x="316" y="282"/>
+<path d="M48 68H1002" stroke="#0E7C7B" stroke-width="1.5"/>
+<rect x="170" y="60" width="30" height="16" fill="#0E7C7B"/><rect x="508" y="60" width="30" height="16" fill="#0E7C7B"/><rect x="850" y="60" width="30" height="16" fill="#0E7C7B"/>
+<path class="wall" d="M48 46H1002V264L936 330H48Z"/>
+<text x="68" y="112" class="n">North bay</text>
+<text x="68" y="156" class="t">25 C</text>
+<text x="68" y="178" class="m">No one present</text>
+<text x="344" y="112" class="n">Central bay</text>
+<text x="344" y="156" class="t">25 C</text>
+<text x="344" y="178" class="m">Held at baseline</text>
+<text x="748" y="112" class="n">East bay</text>
+<text x="748" y="156" class="t">25 C</text>
+<text x="748" y="178" class="m">No one present</text>
+<rect x="548" y="94" width="158" height="28" rx="14" fill="#F8E3DF"/>
+<text x="627" y="113" text-anchor="middle" class="c">Operator review needed</text>
+<circle class="halo" cx="470" cy="215" r="92" fill="url(#ht)"/>
+<circle class="halo" cx="610" cy="246" r="92" fill="url(#hc)"/>
+<path class="lead" stroke="#0E7C7B" d="M470 215C470 310 520 310 520 389"/>
+<path class="lead" stroke="#C8665F" d="M610 246C610 330 770 320 770 421"/>
+<circle cx="470" cy="215" r="6" fill="#0E7C7B" stroke="#fff" stroke-width="2"/>
+<circle cx="610" cy="246" r="6" fill="#C8665F" stroke="#fff" stroke-width="2"/>
+<text x="484" y="207" class="b">Heron</text><text x="484" y="223">Manual position</text>
+<text x="624" y="238" class="b">Ibis</text><text x="624" y="254">Manual position</text>
+<text x="48" y="372" class="n">Comfort ranges in Central bay</text>
+<text x="48" y="400">Heron: 23–26 C, prefers 24.5 C</text>
+<text x="48" y="432">Ibis: 26.5–28 C, prefers 27 C</text>
+<rect x="670" y="380" width="50" height="62" fill="url(#gap)"/>
+<rect x="370" y="388" width="300" height="14" rx="7" fill="#0E7C7B"/>
+<rect x="720" y="420" width="150" height="14" rx="7" fill="#C8665F"/>
+<circle cx="520" cy="395" r="6" fill="#fff" stroke="#0E7C7B" stroke-width="3"/>
+<circle cx="770" cy="427" r="6" fill="#fff" stroke="#C8665F" stroke-width="3"/>
+<path d="M570 360V468" stroke="#17343A" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="578" y="371">Baseline 25 C, demo assumption</text>
+<text x="695" y="458" text-anchor="middle" class="c">No shared range, 0.5 C gap</text>
+<path d="M270 468H970" stroke="#55706F"/>
+<g text-anchor="middle" class="m">
+<text class="m" x="270" y="486">22</text><text class="m" x="370" y="486">23</text><text class="m" x="470" y="486">24</text><text class="m" x="570" y="486">25</text><text class="m" x="670" y="486">26</text><text class="m" x="770" y="486">27</text><text class="m" x="870" y="486">28</text><text class="m" x="970" y="486">29 C</text>
+</g>
+</svg>
+<div class="lower">
+<section>
+<h2>Simulated zone-air setpoint</h2>
+<ul>
+<li><strong>North bay</strong><span>No one present</span><span></span><b>25 C</b></li>
+<li><strong>Central bay</strong><span class="warn">Preferences conflict</span><button class="review">Review conflict</button><b>25 C</b></li>
+<li><strong>East bay</strong><span>No one present</span><span></span><b>25 C</b></li>
+</ul>
+<p class="note">Baseline 25 C is a demo assumption. Central bay stays there until an operator decides.</p>
+</section>
+<section>
+<h2>Evidence</h2>
+<dl>
+<div><dt>Position</dt><dd>Set by each person on their phone</dd></div>
+<div><dt>Preferences</dt><dd>Two people opted in, one conflict</dd></div>
+<div><dt>Setpoints</dt><dd>Simulated, not sent to building equipment</dd></div>
+</dl>
+<p class="energy">Energy impact: not measured</p>
+</section>
+</div>
+</section>
+<aside class="phone" aria-label="Phone preview">
+<div class="screen">
+<p class="label">Your alias</p>
+<p class="alias">Heron</p>
+<p class="label">Preferred temperature</p>
+<p class="big">24.5 C</p>
+<svg class="range" viewBox="0 0 244 38" role="img" aria-label="Acceptable range from 23 to 26 C, with 24.5 C preferred">
+<path d="M0 12H244" stroke="#BCCBCA" stroke-width="4"/>
+<rect x="35" y="7" width="105" height="10" rx="5" fill="#0E7C7B"/>
+<circle cx="87.5" cy="12" r="9" fill="#fff" stroke="#0E7C7B" stroke-width="3"/>
+<text x="35" y="34" text-anchor="middle" class="m">23</text>
+<text x="140" y="34" text-anchor="middle" class="m">26</text>
+</svg>
+<p>Acceptable range 23–26 C</p>
+<p class="label gap">Location</p>
+<div class="seg">
+<button>North</button>
+<button class="on" aria-pressed="true">Central</button>
+<button>East</button>
+</div>
+<p class="label">Manual position. Change it when you move.</p>
+<p class="notice">Your range conflicts with someone else in Central bay. Waiting for operator review.</p>
+<div class="actions">
+<button>Export my data</button>
+<button>Leave Common Climate</button>
+</div>
+</div>
+</aside>
+</main>
+</body>
+</html>

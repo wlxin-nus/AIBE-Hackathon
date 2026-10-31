@@ -1,0 +1,15 @@
+# Shared workplace comfort concept
+
+You are the design collaborator. The challenge is now known: People-Centred Low-Carbon Portfolios. The user has selected an opt-in shared workplace thermal-comfort prototype. Development ends before 14:00 today. Codex is building the connectivity/positioning experiment separately.
+
+Return ONLY a complete standalone HTML document, with inline CSS and SVG, no external dependencies, no scripts, no markdown fences. This is a visual proposal for user approval, not a functional application. Keep it under 450 lines. Do not call tools or write files. All visible text must be English; avoid code comments or make them English and Chinese.
+
+Deliver one beautiful review board containing (1) a desktop building operator screen as the dominant area and (2) a phone screen showing a participant's preferences and location choice. At a 1440px desktop viewport the first screen should fit within about 920px height; phone view may follow below. Use responsive CSS.
+
+Product working name: Common Climate. Inspiration: Monolith reference has a large central spatial canvas, quiet light UI, strong hierarchy, side controls, and a clear stage progression. Borrow the spatial workflow, do not imitate its data-centre content or add unnecessary agents. Choose a cool, calm architectural palette and carefully designed typography using system font stacks. The main visual must be a large, legible schematic plan with 3 simple VAV zones, exactly two participant points and soft Gaussian-like halos. This is an abstract test canvas, not a measured floor plan. Include a legend that says density is participant presence, not measured room temperature. Show explicit position-source labels: Manual placement / GPS unverified. No fake moving people, no geolocation claims, no automatic controls.
+
+Desktop content: connected participants; baseline zone-air setpoint 25 C (demo assumption, not a universal building norm); a zone list with occupancy, acceptable comfort ranges and a simulated recommended zone-air setpoint; a compact explanation panel for conflicting preferences and operator review. Label all data as illustrative and setpoints as simulated. Energy impact is 'Not measured' (no invented savings percentages). Explain that preferences may later support shared-space allocation decisions across floors; no portfolio features need implementation today.
+
+Phone content: alias, preferred temperature and acceptable range, opt-in participation, Export preferences, manual location choice, Stop sharing. The actual first implementation supports manual canvas position and diagnostics; do not imply Bluetooth is working. iPhone Safari has no native Web Bluetooth. Local HTTP cannot use geolocation: trusted HTTPS is required before a real positioning test.
+
+Under the review board include a short design rationale (3 bullets), a positioning truth legend, and a small distinction between Implemented later, Proposed, and Unverified. Make the two views compelling and immediately understandable to a judge, while keeping the operational interface uncluttered. The user will review this proposal before we integrate the final product design.

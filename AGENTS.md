@@ -6,6 +6,8 @@
 - Preparation only: do not scaffold the competition app until the challenge is known. Default app stack: React, TypeScript, Vite and npm; local browser demo first.
 - Vercel project `aibe-hackathon` is connected to `wlxin-nus/AIBE-Hackathon`. The user requested no content publication yet; preserve `git.deploymentEnabled: false` in `vercel.json` until deployment is authorized.
 - Codex owns implementation, verification and integration. Claude provides design proposals and reviews through `scripts/invoke-claude.ps1`; its default invocation has no tools and cannot edit files.
+- Claude tasks must use `claude-opus-5-5` with `high` effort unless the user changes this preference.
+- Selected challenge: People-Centred Low-Carbon Portfolios. The current experiment is opt-in workplace comfort preferences and two-phone position sharing. Preserve the distinction between manual positions, unverified geolocation, simulated zone-air setpoints, and measured building performance.
 - Start with one Codex implementation session and one Claude design session. Add independent sessions only when useful; assign one writer per file.
 - Keep instructions and dependencies small. Reuse available Karpathy guidelines and browser/document tools; the only new skill is project-local `frontend-design`.
 - Do not equate CLI startup, login, sample output or developer subscriptions with a working app AI API. Record actual replies and unresolved blockers honestly.
