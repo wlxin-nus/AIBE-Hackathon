@@ -7,7 +7,8 @@ Start with the original challenge or its attachments; mark other unknown items a
 ```text
 Original challenge / attachments (include all candidates if there are several):
 Judging criteria and required capabilities:
-Build deadline, submission method, presentation length and public-URL requirement:
+Hard development deadline: before 14:00 on 2026-10-31, Singapore/Shanghai time (UTC+8); demo-ready target 13:45.
+Submission method, presentation length and public-URL requirement:
 Data / sample files and their sources:
 Organizer-provided or existing AI resources (provider and quota, or Unknown):
 Team size and responsibilities:
@@ -51,6 +52,7 @@ Complete this section during the first 15 minutes:
 
 ## Demo acceptance checklist
 
+- [ ] Development, final verification and the final code checkpoint finish before 14:00 on 2026-10-31 (UTC+8), with a demo-ready target of 13:45.
 - [ ] The local startup command works, and projected text is readable.
 - [ ] A real AI request succeeds; failure and timeout messages are understandable.
 - [ ] Sample inputs are reusable; real data, synthetic data and saved results are clearly identified.

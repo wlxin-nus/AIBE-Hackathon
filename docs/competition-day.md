@@ -2,6 +2,10 @@
 
 Source: [the organizer's event page](https://luma.com/ed25irgb), checked during preparation on 2026-10-30. All times below are Singapore time (UTC+8, the same as Shanghai). On-site instructions take precedence.
 
+## Hard development deadline
+
+The user confirmed that hackathon development must finish **before 14:00 on 2026-10-31 (UTC+8)**. Keep the existing 13:15 feature freeze and 13:45 demo-ready target, leaving the final 15 minutes for submission and presentation checks. Plan all Codex and Claude work within this cutoff, including verification and the final code checkpoint. Reduce scope whenever a task threatens the deadline. A later event schedule does not automatically extend this user-defined cutoff.
+
 | Time | Action |
 | --- | --- |
 | 10:00-10:30 | Register and confirm power, network, projection and the submission channel. |
@@ -19,7 +23,7 @@ Bring the laptop, charger, projection adapter, mouse and a hotspot. Confirm acco
 
 Once the challenge is available, paste the initial handoff from [the challenge worksheet](challenge-template.md) into the current Codex chat. The challenge text or attachments are enough to start analysis; mark other items `Unknown` and provide them later. Include all candidate challenges when there are several. The fictional rehearsal scenario is not a competition topic.
 
-Start coding when the on-site rules permit. The workflow below assumes an 11:30 build start and a 13:45 demo-ready deadline. If the schedule changes, keep the same sequence and preserve the final 30-minute feature freeze.
+Start coding when the on-site rules permit. The workflow below assumes an 11:30 build start and a 13:45 demo-ready target. Adjust the sequence if the schedule changes, while preserving the hard development cutoff before 14:00.
 
 ## Parallel execution
 

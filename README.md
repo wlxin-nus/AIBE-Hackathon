@@ -2,6 +2,8 @@
 
 Preparation tools and the collaboration workflow for an AI for the Built Environment and Urbanism hackathon. The competition application will be created after the challenge is announced. The default stack is React, TypeScript, Vite and npm, with a local browser demo first.
 
+**Hard development deadline: before 14:00 on 2026-10-31, Singapore time (UTC+8, the same as Shanghai).** Target a demo-ready version by 13:45 to retain a final submission buffer. This deadline applies to both Codex and Claude work.
+
 ## Repository and deployment
 
 Private GitHub repository: [wlxin-nus/AIBE-Hackathon](https://github.com/wlxin-nus/AIBE-Hackathon). Local `main` tracks `origin/main`, and the preparation commit history is preserved. The local working directory remains `hackson_Yuqian`.
