@@ -24,7 +24,8 @@ function inputPath(file) {
   return resolved;
 }
 
-// No shell: args and stdin remain data. stdin.end() is essential in headless use.
+// Avoid a shell so arguments and stdin stay data; close stdin for headless runs.
+// 不经过 Shell，确保参数和标准输入仅作为数据；无交互调用必须关闭标准输入。
 function execute(executable, args, input, { timeoutMs, cwd = ROOT, env = process.env } = {}) {
   return new Promise(resolve => {
     const started = Date.now();
@@ -33,7 +34,9 @@ function execute(executable, args, input, { timeoutMs, cwd = ROOT, env = process
     const timer = setTimeout(() => { timedOut = true; child.kill(); }, timeoutMs);
     child.stdout.setEncoding('utf8').on('data', chunk => { stdout += chunk; });
     child.stderr.setEncoding('utf8').on('data', chunk => { stderr += chunk; });
-    child.stdin.on('error', () => {}); // Early exit (e.g. missing auth) may close stdin first.
+    // An early exit (for example, missing authentication) may close stdin first.
+    // 子进程提前退出（例如未登录）时，标准输入可能先被关闭。
+    child.stdin.on('error', () => {});
     child.on('error', error => { spawnError = error.message; });
     child.on('close', code => {
       clearTimeout(timer);

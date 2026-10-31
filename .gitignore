@@ -1,4 +1,4 @@
-# Generated data and caches
+# Generated data and caches / 生成的数据与缓存
 .cache/
 outputs/
 .vercel/
@@ -9,7 +9,7 @@ build/
 __pycache__/
 *.pyc
 
-# Local secrets and settings
+# Local secrets and settings / 本地密钥与设置
 .env
 .env.*
 !.env.example
@@ -17,7 +17,7 @@ __pycache__/
 *.key
 .claude/settings.local.json
 
-# Editor / OS noise
+# Editor / OS noise / 编辑器与系统临时文件
 .DS_Store
 Thumbs.db
 *.log

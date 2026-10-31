@@ -1,5 +1,6 @@
 # Hackathon workspace
 
+- Use English for project documentation, instructions, task prompts, design briefs and user-facing text. Explanatory comments in project-owned code must include both English and Chinese. Preserve command directives and vendored third-party skills/licenses verbatim; retain original historical diagnostic evidence.
 - Keep project code, scripts, task inputs, skills and generated outputs inside this repository. Reuse installed tools and existing account credentials; do not copy credentials into the repository.
 - Preparation only: do not scaffold the competition app until the challenge is known. Default app stack: React, TypeScript, Vite and npm; local browser demo first.
 - Vercel project `aibe-hackathon` is connected to `wlxin-nus/AIBE-Hackathon`. The user requested no content publication yet; preserve `git.deploymentEnabled: false` in `vercel.json` until deployment is authorized.

@@ -1,71 +1,91 @@
-# AIBE-Hackathon · 赛前工具环境
+# AIBE-Hackathon
 
-这里只准备开发工具与协作流程。比赛题目公布后再创建应用；默认 React + TypeScript + Vite + npm，本机浏览器演示优先。
+Preparation tools and the collaboration workflow for an AI for the Built Environment and Urbanism hackathon. The competition application will be created after the challenge is announced. The default stack is React, TypeScript, Vite and npm, with a local browser demo first.
 
-## 代码仓库与同步
+## Repository and deployment
 
-GitHub 私有仓库：[wlxin-nus/AIBE-Hackathon](https://github.com/wlxin-nus/AIBE-Hackathon)。本地 `main` 跟踪 `origin/main`，已有准备工作提交历史完整保留。本地工作目录继续使用 `hackson_Yuqian`。
+Private GitHub repository: [wlxin-nus/AIBE-Hackathon](https://github.com/wlxin-nus/AIBE-Hackathon). Local `main` tracks `origin/main`, and the preparation commit history is preserved. The local working directory remains `hackson_Yuqian`.
 
-后续按可运行或可验证的进度保存提交，再通过 `git push` 同步至 GitHub。`git commit` 保存本地版本，`git push` 上传提交；网站部署在配置 Vercel 项目后另行验证。
+Create commits at runnable or verifiable milestones, then use `git push` to synchronize them with GitHub. A commit saves a local version; a push uploads commits. Website publication is a separate step.
 
-2026-10-31 已完成 Vercel 的 GitHub 应用授权，访问范围仅包含 `AIBE-Hackathon`，并创建空项目 [aibe-hackathon](https://vercel.com/xin919523529-7149/aibe-hackathon)，已连接此仓库。目前没有生产部署或预览部署。
+The empty Vercel project [aibe-hackathon](https://vercel.com/xin919523529-7149/aibe-hackathon) was created on 2026-10-31 and connected to this repository. The Vercel GitHub application's repository access is limited to `AIBE-Hackathon`. No production or preview deployment has been published.
 
-按用户“先不发布内容”的要求，`vercel.json` 中 `git.deploymentEnabled` 暂设为 `false`，所有分支的推送均不触发自动部署；commit/push 仍正常同步代码。正式上线获授权后，再确认应用目录、框架、构建与服务端环境变量，启用自动部署并验证首个公开版本。
+As requested, `git.deploymentEnabled` is `false` in `vercel.json`, so pushes to all branches do not trigger automatic deployments. Commit and push operations still synchronize code normally. Once publication is authorized, confirm the application directory, framework, build settings and server-side environment variables before enabling automatic deployment and verifying the first public version.
 
-缓存、诊断输出、本机 Vercel 配置和密钥文件由忽略规则排除。推送前检查本次变更，不提交凭据。
+Caches, diagnostics, local Vercel configuration and secret files are excluded by `.gitignore`. Review changes before pushing, and never commit credentials.
 
-## 快速开始
+## Language convention
 
-在此项目根目录打开 PowerShell（Windows PowerShell 5.1 或 PowerShell 7 均可），执行：
+- Write documentation, project instructions, task prompts, generated design briefs and user-facing text in English.
+- Write explanatory comments in project-owned code in both English and Chinese. Keep command directives such as `#Requires` intact.
+- Preserve vendored third-party skills and license files verbatim.
+- Historical diagnostic artifacts are original evidence, are ignored by Git and are not rewritten for translation.
+
+## Quick start
+
+Open Windows PowerShell 5.1 or PowerShell 7 in the project root.
+
+Run the offline preflight to check versions, local authentication and skill integrity without calling a model:
 
 ```powershell
-# 离线预检：版本、认证状态、技能完整性；不调用模型
 powershell -NoProfile -File .\scripts\preflight.ps1
+```
 
-# 完整联网预检：还检查 npm 并实际调用 Opus 5.5
+Run the online preflight to additionally check npm and request a real Opus 5.5 reply:
+
+```powershell
 powershell -NoProfile -File .\scripts\preflight.ps1 -Online
+```
 
-# 请求界面方案：任务文件必须位于项目内，修改任务内容即可复用
+Request an English design brief using a task file inside the project:
+
+```powershell
 powershell -NoProfile -File .\scripts\invoke-claude.ps1 -PromptFile tasks/design-smoke.md -TaskId design-smoke -FrontendDesign
+```
 
-# 临时网页检查；浏览器打开 http://127.0.0.1:4173，点击按钮，结束后 Ctrl+C
+Start the temporary environment-check page, open http://127.0.0.1:4173, click the verification button and stop the server with Ctrl+C:
+
+```powershell
 node .\scripts\web-smoke.cjs
+```
 
-# 不消耗模型额度的脚本测试
+Run the offline script tests without consuming model quota:
+
+```powershell
 node --test .\tests\claude-runner.test.cjs
 ```
 
-若使用 PowerShell 7，可把上面的 `powershell` 替换为 `pwsh`。脚本依据自身位置定位项目，从其他目录调用时，任务相对路径仍相对于项目根目录。
+With PowerShell 7, replace `powershell` with `pwsh`. Scripts locate the project from their own directory. Relative task paths are always resolved against the project root, even when the script is launched from elsewhere.
 
-## Claude 调用约定
+## Claude invocation contract
 
-- 固定模型 `claude-opus-5-5`，默认隔离模式、无工具、无 MCP、无会话保存；由 Codex 保存输出。
-- `-FrontendDesign` 显式加入项目内的官方技能内容，隔离模式也可用。项目约束始终显式传入。
-- `-TimeoutSec` 范围 1–180，默认 180。脚本关闭标准输入、超时终止子进程，失败返回非零退出码。
-- 排查启动配置差异时才加 `-Mode normal`。它会加载现有用户配置和插件，仍禁用模型工具与 MCP；不用于默认设计流程。
-- 每次输出到 `outputs/claude/<任务编号>-<唯一编号>/`，包括 `result.json`、脱敏事件和错误日志；有回答时保存 `response.md`。失败时先看 `status`、`error` 和对应日志。
-- `success` 必须有完整回答和指定模型的报告；`timeout`、`auth_error`、`model_error`、`service_overloaded`、`rate_limited`、`model_mismatch`、`model_unverified`、`process_error` 均不能算连接成功。`service_overloaded` 表示上游容量问题，区别于账号/请求限额。CLI 启动和本地登录不能代替真实请求验收。
-- 原始任务、设计评审资料会按请求发送给 Claude；不要在任务文件里放密钥。账号凭据继续由现有工具管理，不复制到项目。
+- The model is fixed to `claude-opus-5-5`. The default isolated mode exposes no tools or MCP servers and saves no Claude session. Codex saves the returned output.
+- `-FrontendDesign` explicitly includes the project-local official skill, including in isolated mode. The project instructions are always included explicitly.
+- `-TimeoutSec` accepts 1-180 seconds and defaults to 180. The runner closes standard input, terminates timed-out child processes and exits with a nonzero code on failure.
+- Use `-Mode normal` only to diagnose differences in existing user settings or plugins. Model tools and MCP remain disabled; this is not the default design workflow.
+- Each invocation writes to `outputs/claude/<task-id>-<unique-id>/`, containing `result.json`, redacted events and an error log. A successful answer is also saved as `response.md`. Inspect `status`, `error` and the logs when a request fails.
+- `success` requires a complete answer and evidence of the requested model. Failure states include `timeout`, `auth_error`, `model_error`, `service_overloaded`, `rate_limited`, `model_mismatch`, `model_unverified` and `process_error`. Service overload is distinct from account or request limits. Startup and local login alone do not prove a working request.
+- Requested task content and review material are sent to Claude. Keep secrets out of task files. Existing tools continue to manage account credentials; do not copy them into the repository.
 
-Codex 沙箱中出现 DNS 失败或本机页面访问超时，而普通 PowerShell 正常时，应在允许的主机网络环境执行这些联网或本机服务检查；不要因此修改全局 DNS、代理或安全设置。
+If DNS or localhost access fails inside the Codex sandbox but works in an ordinary terminal, run the relevant network or local-server check in the permitted host environment. Do not change global DNS, proxy or security settings to compensate for sandbox isolation.
 
-需要绕过统一封装、直接验证 PowerShell 到 Claude Code 的通讯时：
+To bypass the wrapper and check direct PowerShell communication with Claude Code:
 
 ```powershell
 Get-Content -LiteralPath .\tasks\ping.md -Raw | claude -p --model claude-opus-5-5 --output-format json --no-session-persistence --tools Read --strict-mcp-config
 ```
 
-直接调用允许文件读取，禁用写入、命令和 MCP；统一脚本的默认工具列表仍为空，并提供超时和结果归档。2026-10-30 20:43 的直接 PowerShell、CMD、原脚本及完整联网预检均通过，详见验收记录。
+This direct check allows file reads but exposes no write, command or MCP tools. The wrapper's default tool list remains empty and adds timeout handling and output archiving. Direct PowerShell, CMD, the original wrapper and the complete online preflight all passed on 2026-10-30 at 20:43 UTC+8; see the readiness record.
 
-## 内容位置与边界
+## Workspace contents
 
-- `tasks/`：可复用任务输入；`docs/`：比赛清单、任务单、技能版本及验收结论。
-- `scripts/`：调用、预检与临时网页；`tests/`：关键错误处理的离线验证。
-- `.claude/skills/frontend-design/`：唯一新增技能；官方来源和文件 SHA256 见 `docs/skills-lock.json`。
-- 新开的 Claude 会话可自动发现此项目技能；当前统一脚本通过显式传入即可使用。Codex 可按需直接阅读该技能，无需再安装一份。
-- `outputs/` 与 `.cache/`：生成结果、诊断、下载临时文件和 npm 缓存，均不纳入 Git。
-- 系统安装、已有账号凭据和工具自身内部存储继续使用原位置。本次不修改全局配置，不购买 API，不配置云部署，不预装应用框架。
+- `tasks/`: reusable task inputs. `docs/`: competition checklists, the challenge template, skill provenance and readiness evidence.
+- `scripts/`: invocation, preflight and the temporary web check. `tests/`: offline checks of important failure paths.
+- `.claude/skills/frontend-design/`: the only newly installed skill. Its official source, pinned commit and SHA256 hashes are recorded in `docs/skills-lock.json`.
+- New Claude sessions can discover the project skill. The wrapper includes it explicitly, and Codex can read it without installing another copy.
+- `outputs/` and `.cache/`: generated results, diagnostics, temporary downloads and npm cache, all excluded from Git.
+- Existing system tools, account credentials and tool-internal storage keep their original locations. No application framework, database or extra browser extension was installed during preparation.
 
-先阅读 `docs/readiness.md` 的实际验收结论，再使用 `docs/challenge-template.md` 与 `docs/competition-day.md` 现场开工。
+Read [the readiness record](docs/readiness.md), then use [the challenge template](docs/challenge-template.md) and [competition-day workflow](docs/competition-day.md).
 
-官方参考：[Claude 非交互调用](https://code.claude.com/docs/en/headless)、[CLI 参数](https://code.claude.com/docs/en/cli-reference)、[frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design)、[Vite 环境要求](https://vite.dev/guide/)。
+Official references: [programmatic Claude Code](https://code.claude.com/docs/en/headless), [CLI options](https://code.claude.com/docs/en/cli-reference), [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design), [Vite requirements](https://vite.dev/guide/) and [Vercel Git configuration](https://vercel.com/docs/project-configuration/git-configuration).

@@ -48,6 +48,7 @@ try {
     Add-Check 'app-runtime-ai' 'info' 'Deferred until the challenge is known; developer login is not app API readiness.'
     if ($Online) {
         # Windows PowerShell 5.1 can turn native stderr notices into terminating errors.
+        # Windows PowerShell 5.1 可能将原生命令的标准错误通知当作终止错误。
         $savedPreference = $ErrorActionPreference
         $npmOk = $false
         try {

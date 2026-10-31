@@ -1,57 +1,59 @@
-# 现场任务单
+# Challenge worksheet
 
-## 你先发给 Codex 的信息
+## Initial handoff to Codex
 
-最先提供赛题原文或附件即可启动分析，其他项目可先写“未知”。不要把 API Key 粘贴进来；如有数据文件，放在本项目内并说明文件名。
+Start with the original challenge or its attachments; mark other unknown items as `Unknown` and fill them in later. Do not paste API keys. Put data files inside this project and provide their filenames.
 
 ```text
-赛题原文/附件（如有多个题目，请全部提供）：
-评分标准与必须实现的内容：
-构建截止时间、提交方式、演示时长、是否必须有公开网址：
-数据/样例文件及来源：
-主办方或现有 AI 资源（供应商/有无额度，未知也可以）：
-队友人数、可承担的工作：
-其他硬性限制或我的偏好：
+Original challenge / attachments (include all candidates if there are several):
+Judging criteria and required capabilities:
+Build deadline, submission method, presentation length and public-URL requirement:
+Data / sample files and their sources:
+Organizer-provided or existing AI resources (provider and quota, or Unknown):
+Team size and responsibilities:
+Other constraints or preferences:
 
-请先收敛一个可演示的核心流程，给 Claude 下发设计任务，并行推进技术验证与数据准备。沿用项目内工作方式，暂不安装 ECC。
+Please scope one demonstrable end-to-end workflow, brief Claude on the interface design, and progress technical validation and data preparation in parallel. Follow the project workflow and do not install ECC.
 ```
 
-## Codex 整理并维护的问题定义（前 15 分钟完成）
+## Problem definition maintained by Codex
 
-- 官方 challenge 原文 / 链接：
-- 目标用户及使用场景：
-- 当前具体痛点：
-- 今天只完成的一个核心流程：
-- 输入材料、来源与可用权限：
-- AI 具体完成的动作：
-- 用户看到或下载的结果：
-- 人工如何核对结果：
-- 可测量的价值 / 对照基线（估算需标明）：
-- 今天明确不做：
+Complete this section during the first 15 minutes:
 
-## 实现约定
+- Official challenge text / link:
+- Target user and scenario:
+- Specific current pain point:
+- The one core workflow to complete today:
+- Input material, sources and permissions:
+- The specific action performed by AI:
+- The result the user can see or download:
+- How a person can verify that result:
+- Measurable value / comparison baseline (label estimates):
+- Explicitly out of scope today:
 
-- 页面和主要状态：
-- 最小数据样例（真实 / 合成需标明）：
-- 输入/输出示例、字段含义和关键错误状态：
-- AI 运行来源、额度与失败处理：
-- Codex 实现任务及文件所有者：
-- Claude 设计任务及输出位置：
-- 可点击的完整流程验收标准：
-- 最后一个可演示的 Git 检查点：
+## Implementation agreement
 
-## 三分钟演示
+- Screens and important states:
+- Minimal sample data (label real or synthetic):
+- Input/output examples, field meanings and key error states:
+- AI runtime source, quota and failure handling:
+- Codex implementation tasks and file ownership:
+- Claude design tasks and output location:
+- Acceptance criteria for the clickable end-to-end workflow:
+- Latest demonstrable Git checkpoint:
 
-1. 0:00–0:30：谁遇到什么问题，现有流程哪里慢。
-2. 0:30–2:00：输入材料 → AI 处理 → 展示可核对的结果。
-3. 2:00–2:30：实际价值、结果依据、明确限制。
-4. 2:30–3:00：下一步；必要时切换截图或录屏。
+## Three-minute presentation
 
-## 演示前检查
+1. 0:00-0:30: Who has the problem, and where does the existing process lose time?
+2. 0:30-2:00: Input material -> AI processing -> a verifiable result.
+3. 2:00-2:30: Practical value, supporting evidence and clear limitations.
+4. 2:30-3:00: Next steps; use screenshots or a recording if needed.
 
-- [ ] 本机启动命令已验证，投屏字号可读。
-- [ ] 真实 AI 请求已成功；失败和超时有可理解的提示。
-- [ ] 示例输入可重复使用；真实数据、合成数据和预录结果有明确标识。
-- [ ] 已保存截图、简短录屏、示例结果和可恢复的 Git 检查点。
-- [ ] 断网时可以展示已保存的演示材料，不把保存结果说成实时生成。
-- [ ] 提交要求、截止时间、演示时长和队友分工已向现场信息核对。
+## Demo acceptance checklist
+
+- [ ] The local startup command works, and projected text is readable.
+- [ ] A real AI request succeeds; failure and timeout messages are understandable.
+- [ ] Sample inputs are reusable; real data, synthetic data and saved results are clearly identified.
+- [ ] Screenshots, a short recording, sample outputs and a recoverable Git checkpoint are saved.
+- [ ] Saved materials support an offline presentation and are not described as live generation.
+- [ ] Submission requirements, deadlines, presentation length and team responsibilities have been checked against on-site instructions.

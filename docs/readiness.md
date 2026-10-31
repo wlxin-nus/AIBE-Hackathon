@@ -1,47 +1,55 @@
-# 赛前准备验收
+# Preparation readiness record
 
-检查日期：2026-10-30（UTC+8），20:43 复测。**本机工具环境、Opus 5.5 真实回答与带设计技能的方案往返均已通过。应用运行时 AI 仍按计划延后。**
+Local tool checks were repeated on 2026-10-30 at 20:43 UTC+8. Repository and Vercel setup were completed on 2026-10-31. **The local environment, real Opus 5.5 replies and the design-skill round trip passed. Application-runtime AI remains deferred until the challenge is known.**
 
-| 项目 | 状态 | 实际证据 |
+| Check | Status | Evidence |
 | --- | --- | --- |
-| 项目目录与本地 Git | 已建立 | 项目文件、任务、技能和输出均在根目录内；生成结果与缓存不纳入 Git |
-| GitHub 远程同步（2026-10-31） | 通过 | 私有仓库 `wlxin-nus/AIBE-Hackathon`，本地 `main` 跟踪 `origin/main`，已推送并核对提交一致 |
-| Vercel 仓库访问（2026-10-31） | 通过 | 用户已完成 GitHub 应用安装，仅选择本仓库；Vercel 导入列表可见 `AIBE-Hackathon` |
-| Vercel 空项目与仓库连接（2026-10-31） | 通过 | 已创建 `aibe-hackathon`，Git 设置显示连接到 `wlxin-nus/AIBE-Hackathon` |
-| 内容发布 | 按要求未发布 | 项目概览确认 No Production Deployment、No Preview Deployments，生产域名未提供流量 |
-| 自动部署控制 | 暂停 | `vercel.json` 设置 `git.deploymentEnabled: false`，连接仓库但不随推送发布内容 |
-| Node / npm / Git / Claude Code | 通过 | Node 22.14.0、npm 10.9.2、Git 2.45.2、Claude Code 2.1.314；Node 满足已核对的 Vite 要求 |
-| Claude 本地认证 | 通过 | 现有 Claude Pro 登录可读取；未复制凭据、未更改登录状态 |
-| PowerShell 离线预检 | 通过 | Windows PowerShell 5.1 与 PowerShell 7 新进程均通过；另用系统持久 PATH 复测通过，不依赖 Codex 注入的工具路径 |
-| npm 网络与本地缓存 | 通过 | 官方源可达；npm 缓存解析为项目下 `.cache/npm` |
-| 浏览器控制 | 通过 | Chrome 访问本机页面并点击按钮，显示 `BROWSER_CONTROL_OK`；截图与记录在 `outputs/browser/` |
-| 临时服务清理 | 通过 | 测试标签已关闭；服务停止后不再接受 4173 端口连接 |
-| 唯一新增技能 | 安装、完整性与设计往返通过 | 官方 `frontend-design`，固定提交及 SHA256 见 `skills-lock.json`；真实设计输出已收到 |
-| 调用脚本错误处理 | 通过 | 六项离线测试覆盖标准输入关闭、中文与特殊字符、超时终止、启动失败、认证/模型/限额错误、模型核对、过载恢复及日志脱敏 |
-| Opus 5.5 真实回答 | 通过 | 加载用户配置的直接 PowerShell、直接 CMD 标准输入、未修改的原脚本均返回 `CODEX_CLAUDE_OK`，实际模型均报告 `claude-opus-5-5` |
-| 带设计技能的方案生成 | 通过 | 原脚本显式传入技能，约 30.5 秒后生成《巡检复核台设计简报》，包含布局、色彩、组件、状态和浏览器验收清单 |
-| 最新联网预检 | 通过 | Windows PowerShell 5.1 返回 `passed: true`、退出码 0；npm 与真实模型回答均通过 |
-| 应用运行时 AI | 按计划延后 | 当前进程未发现常见 API Key；开发工具订阅不作为应用 API 已就绪的证据 |
+| Workspace and local Git | Established | Project files, tasks, skills and outputs stay inside the root; generated results and caches are excluded from Git. |
+| GitHub synchronization (2026-10-31) | Passed | Private repository `wlxin-nus/AIBE-Hackathon`; local `main` tracks `origin/main`; pushed commits were compared and matched. |
+| Vercel repository access (2026-10-31) | Passed | The user installed the GitHub application for this repository only; Vercel lists `AIBE-Hackathon`. |
+| Empty Vercel project and Git connection (2026-10-31) | Passed | Created `aibe-hackathon`; Git settings show `wlxin-nus/AIBE-Hackathon` as connected. |
+| Content publication | Not published, as requested | The overview showed No Production Deployment and No Preview Deployments; the production domain was not serving traffic. |
+| Automatic deployment control | Disabled | `vercel.json` sets `git.deploymentEnabled: false`; the repository is connected without publishing on push. |
+| Node / npm / Git / Claude Code | Passed | Node 22.14.0, npm 10.9.2, Git 2.45.2 and Claude Code 2.1.314; Node meets the checked Vite requirement. |
+| Local Claude authentication | Passed | Existing Claude Pro login is readable; credentials were not copied and login state was not changed. |
+| Offline PowerShell preflight | Passed | Fresh Windows PowerShell 5.1 and PowerShell 7 processes passed. A separate check using the system's persistent PATH passed without Codex-injected tool paths. |
+| npm connectivity and local cache | Passed | The official registry was reachable; npm cache resolves to project-local `.cache/npm`. |
+| Browser control | Passed | Chrome opened the local page; clicking the button displayed `BROWSER_CONTROL_OK`. Evidence is in `outputs/browser/`. |
+| Temporary service cleanup | Passed | Test tabs were closed; the stopped service no longer accepted connections on port 4173. |
+| Only newly installed skill | Installation, integrity and design round trip passed | Official `frontend-design`; the pinned commit and SHA256 hashes are in `skills-lock.json`, and a real design response was received. |
+| Invocation error handling | Passed | Six offline tests cover stdin closure, Unicode and shell metacharacters, timeout termination, startup failure, auth/model/quota errors, model identity, overload recovery and redaction. |
+| Real Opus 5.5 response | Passed | Direct PowerShell with user configuration, direct CMD stdin and the unchanged original wrapper all returned `CODEX_CLAUDE_OK`, reporting `claude-opus-5-5`. |
+| Design-skill response | Passed | The wrapper explicitly supplied the skill and produced an Inspection Review Workbench brief in about 30.5 seconds, covering layout, colours, components, states and browser acceptance. The historical rehearsal response was in Chinese. |
+| Latest live preflight | Passed | Windows PowerShell 5.1 returned `passed: true` and exit code 0; npm and the real model reply both passed. |
+| Application-runtime AI | Deferred as planned | Common API keys were not present in the checked process. Developer subscriptions are not treated as proof of an available application API. |
 
-## 通讯复测与历史错误
+## Language update verification (2026-10-31)
 
-先前普通配置、隔离配置和设计任务都确实返回过 529 或过载重试；这些记录保留为历史证据。20:41–20:43 复测直接 PowerShell、直接 CMD 和原封装均成功。原脚本与账号配置没有为此次恢复作修改，因此现有证据无法把先前失败归因于 Node 封装、Shell 类型或配置差异，也不能确定唯一根因。
+Project documentation, instructions, task prompts and temporary-page UI copy are now in English. Explanatory code and configuration comments are bilingual, English and Chinese. Vendored skill files and licenses were preserved unchanged; historical generated artifacts retain their original contents.
 
-当前可继续通过 PowerShell/CMD 使用本机 Claude Code。以后需要复查时，在项目根目录依次运行：
+The repository scan found Chinese text only in bilingual comments. All six offline script tests passed, the temporary web script passed its syntax check, and a fresh Windows PowerShell 5.1 offline preflight passed, including skill-integrity verification. Chinese UTF-8 test coverage is preserved through Unicode escapes in the fixture.
+
+A real Opus 5.5 request using the updated design prompt returned an English brief successfully in about 23.6 seconds. The response is stored at `outputs/claude/english-design-check-1793414134615-a6f3a895/response.md`. Automatic deployments remain disabled.
+
+## Communication rechecks and historical errors
+
+Earlier normal-mode, isolated-mode and design requests returned HTTP 529 or overload retries. Those records remain as historical evidence. Direct PowerShell, direct CMD and the original wrapper all succeeded during the 20:41-20:43 rechecks on 2026-10-30. Neither the wrapper nor account configuration was changed to achieve that recovery, so the evidence does not establish Node, shell choice or configuration differences as the unique cause.
+
+Claude Code can be used through PowerShell or CMD. To recheck from the project root:
 
 ```powershell
 powershell -NoProfile -File .\scripts\preflight.ps1 -Online
 powershell -NoProfile -File .\scripts\invoke-claude.ps1 -PromptFile tasks/design-smoke.md -TaskId design-smoke -FrontendDesign
 ```
 
-上述两项本轮均已通过。第一条的真实回答、指定模型和最新通过状态在预检报告中；第二条的有效 `response.md` 在 `outputs/claude/design-smoke-recheck-1793364165386-5cf252f0/`。设计练习始终是虚构演练，不作为正式比赛选题。
+Both checks passed in that round. The preflight report records the real reply and requested model. The successful design response is at `outputs/claude/design-smoke-recheck-1793364165386-5cf252f0/response.md`. The rehearsal is fictional and is not the selected competition topic. The current task prompt now requests English output; historical evidence is retained unchanged.
 
-直接 PowerShell 与 CMD 的对照记录分别为 `outputs/diagnostics/direct-powershell.json` 和 `outputs/diagnostics/direct-cmd-stdin.json`。早期 CMD 参数引号试验截断过测试文本，该记录不算完整文本传递通过；改为标准输入后完整传递并得到指定回答。
+Direct PowerShell and CMD records are `outputs/diagnostics/direct-powershell.json` and `outputs/diagnostics/direct-cmd-stdin.json`. An earlier CMD argument-quoting attempt truncated the prompt and is not counted as successful full-text delivery. Passing the prompt on stdin delivered the complete text and returned the expected answer.
 
-## 证据与使用限制
+## Evidence and limitations
 
-- 每次调用均有唯一输出目录；先看 `outputs/claude/` 下的 `result.json`，再看脱敏事件记录。旧版本诊断可能把 529 归为 `rate_limited`，应以明确的 HTTP 529 和 `overloaded` 文本为准；当前脚本已单列 `service_overloaded`。
-- `outputs/diagnostics/` 保存预检报告，`outputs/browser/` 保存浏览器截图、交互记录和停止记录。这些是本机生成材料，未纳入 Git。
-- 错误处理测试使用受控子进程和错误事件，不会登出真实账号、修改模型权限或刻意耗尽额度。
-- 沙箱内 DNS 和主机浏览器网络存在隔离；联网预检和本机网页应在允许的主机执行环境运行。普通终端成功、沙箱失败时，不据此改动全局网络设置。
-- 项目未创建应用脚手架，未安装应用框架、数据库或新增浏览器插件；已有系统工具、账号凭据及工具自身内部存储沿用原位置。
+- Each request has a unique output directory. Start with `result.json` under `outputs/claude/`, then inspect the redacted events. An earlier runner grouped HTTP 529 under `rate_limited`; the recorded 529/overloaded text identifies the actual error. The current runner uses a separate `service_overloaded` status.
+- `outputs/diagnostics/` stores preflight reports. `outputs/browser/` stores screenshots, interaction records and service-stop evidence. These generated local artifacts are excluded from Git.
+- Failure-path tests use controlled subprocesses and error events; they do not log out the real account, alter model access or intentionally exhaust quota.
+- Sandbox DNS and the host browser network are isolated. Run network and local-web checks in the permitted host environment; do not change global network settings when only sandbox checks fail.
+- No competition application scaffold, framework, database or extra browser extension was installed during preparation. Existing tools, account credentials and tool-internal storage remain in their original locations.

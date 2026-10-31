@@ -1,58 +1,63 @@
-# 比赛当天清单
+# Competition-day workflow
 
-来源：[主办方活动页](https://luma.com/ed25irgb)，准备时核对于 2026-10-30。以下均为新加坡时间（UTC+8，与当前上海时区相同），以现场通知为准。
+Source: [the organizer's event page](https://luma.com/ed25irgb), checked during preparation on 2026-10-30. All times below are Singapore time (UTC+8, the same as Shanghai). On-site instructions take precedence.
 
-| 时间 | 行动 |
+| Time | Action |
 | --- | --- |
-| 10:00–10:30 | 注册，确认供电、网络、投屏和提交渠道 |
-| 10:30–10:45 | 听取 challenge，记录要求与评审关注点 |
-| 10:45–11:30 | 工具与快速原型环节；核实数据、模型额度和队友能力 |
-| 11:30–11:45 | 用任务单锁定一个用户、一条流程和一个可见结果 |
-| 11:45–13:15 | 先跑通输入到输出，再完善界面；每个可演示版本保留检查点 |
-| 13:15–13:45 | 停止扩功能，修复演示路径，准备截图、示例结果和录屏 |
-| 13:45–14:00 | 按要求提交，核对链接、文件和三分钟讲述 |
-| 14:00–15:00 | 演示、评审及交流 |
+| 10:00-10:30 | Register and confirm power, network, projection and the submission channel. |
+| 10:30-10:45 | Capture the challenge requirements and judging priorities. |
+| 10:45-11:30 | Attend the tools and prototyping session; check data, model quota and team capabilities. |
+| 11:30-11:45 | Use the worksheet to lock one user, one workflow and one visible result. |
+| 11:45-13:15 | Make input-to-output work, then improve the interface; keep demonstrable checkpoints. |
+| 13:15-13:45 | Freeze features, fix the demo path and prepare screenshots, outputs and a recording. |
+| 13:45-14:00 | Submit, verify the required links/files and rehearse the three-minute presentation. |
+| 14:00-15:00 | Presentations, judging and networking. |
 
-## 出发与开工
+## Arrival and kickoff
 
-带电脑、充电器、投屏转接头、鼠标和热点；确认账号可用。到场后运行一次离线预检，有网络时运行联网预检。代码、任务、技能和输出继续放在此项目内，不安装 ECC。
+Bring the laptop, charger, projection adapter, mouse and a hotspot. Confirm account access. Run the offline preflight on arrival and the online preflight when connectivity is available. Keep code, tasks, skills and generated outputs inside this project. Do not install ECC.
 
-拿到题目后，在当前 Codex 主会话粘贴 [任务单](challenge-template.md) 顶部的交接模板。最先提供赛题原文或附件即可开始分析，其余信息可标“未知”，随后补充。若有多个 challenge，先提供全部候选，不提前假定练习场景就是比赛题目。
+Once the challenge is available, paste the initial handoff from [the challenge worksheet](challenge-template.md) into the current Codex chat. The challenge text or attachments are enough to start analysis; mark other items `Unknown` and provide them later. Include all candidate challenges when there are several. The fictional rehearsal scenario is not a competition topic.
 
-编码开始时间遵循现场规则。下面按 11:30 正式构建、13:45 完成演示准备安排；如现场时间不同，保持相同步骤和最后 30 分钟的冻结窗口。
+Start coding when the on-site rules permit. The workflow below assumes an 11:30 build start and a 13:45 demo-ready deadline. If the schedule changes, keep the same sequence and preserve the final 30-minute feature freeze.
 
-## 分阶段执行与并行工作
+## Parallel execution
 
-| 阶段 | Codex 主会话 | Claude 设计会话 | 你和队友 | 阶段产物 |
+| Stage | Codex main session | Claude design session | You and teammates | Deliverable |
 | --- | --- | --- | --- | --- |
-| 前 15 分钟 | 提取评分与硬性要求；给出推荐范围；维护一页任务单和验收标准 | 收到同一份简报后，提出用户流程、页面层次与必要状态 | 核对痛点与用户；向导师确认不清楚的要求；寻找真实样例 | 一个用户、一条核心流程、一组输入和一个可见结果；列出舍弃项 |
-| 接下来 30 分钟 | 题目确定后创建最小项目；固定输入输出样例；验证真实 AI 运行路径；实现第一条可点击流程 | 并行返回一个明确方案：布局、颜色/字体/间距、组件、交互状态与验收点 | 整理可用数据、示例和来源；确认提交渠道、演示时长、是否要求网址 | 至少一个样例能从输入走到结果；AI 结果与保存的示例结果区分清楚 |
-| 至 13:15 | 按方案实现并整合；先完成核心闭环，再改善界面；保存可演示 Git 检查点 | 根据 Codex 提供的页面结构、文案和浏览器发现复查设计，给出小范围修改清单 | 试用并核对业务结果；准备问题价值、对照方式和演示讲述 | 核心流程可重复运行，结果可解释，关键异常有反馈 |
-| 13:15–13:45 | 停止扩功能；修复关键问题；验证真实输入、错误状态、启动与恢复；保存截图和演示材料 | 检查信息层次、按钮文案、可读性与演示叙事，避免大规模改版 | 彩排三分钟演示，复核材料和提交要求 | 稳定演示版本、示例结果、截图/短录屏和恢复检查点 |
-| 13:45–14:00 | 协助整理运行说明、技术说明和交付文件 | 有需要时润色简短演示文案 | 按主办方渠道提交，确认提交成功 | 完整提交与可展示的本机演示 |
+| First 15 minutes | Extract judging criteria and constraints; recommend scope; maintain a one-page brief and acceptance criteria. | Use the same brief to propose the user flow, page hierarchy and essential states. | Validate the pain point and user; ask mentors about unclear requirements; find real samples. | One user, one core flow, one input sample and one visible result, plus explicit exclusions. |
+| Next 30 minutes | Create the minimal project after the topic is known; agree input/output samples; validate real AI execution; implement the first clickable flow. | Return one concrete design: layout, colour/type/spacing, components, interaction states and acceptance points. | Prepare data and sources; confirm submission channel, presentation length and URL requirements. | At least one sample travels from input to result; saved examples are distinct from real AI responses. |
+| Until 13:15 | Implement and integrate the complete core flow before polishing; save demonstrable Git checkpoints. | Review page structure, copy and browser findings supplied by Codex; recommend small changes. | Try the workflow and verify business results; prepare the value proposition and comparison method. | A repeatable core flow with explainable results and useful error feedback. |
+| 13:15-13:45 | Freeze features; fix critical issues; check real inputs, errors, startup and recovery; save screenshots and demo materials. | Review hierarchy, button copy, readability and the demo narrative; avoid a major redesign. | Rehearse the three-minute demo and confirm submission requirements. | A stable demo, sample results, screenshots/short recording and a recovery checkpoint. |
+| 13:45-14:00 | Help package run instructions, technical notes and deliverables. | Refine short presentation copy if useful. | Submit through the required channel and confirm success. | A complete submission and a demonstrable local application. |
 
-设计尚未返回时，Codex 先推进项目启动、数据样例、输入输出约定和 AI 调用，不等待视觉细节。若第一个样例无法按时跑通，优先缩小输入范围、页面数或输出类型。
+While the design is pending, Codex progresses startup, samples, input/output contracts and AI requests. If the first sample is not working on time, reduce the input scope, screen count or output types.
 
-## 明确的职责
+## Responsibilities
 
-- 你负责真实业务判断、现场信息和最终讲述。及时纠正用户、痛点、输入材料等假设；技术实现细节由 Codex 推进。
-- Codex 负责范围拆解、技术选型、代码、依赖、运行、浏览器操作、截图、测试和集成，并通过项目内 PowerShell 脚本调用 Claude。
-- Claude 负责视觉与交互方案、组件建议、文案和设计评审，默认返回文本，不写入项目代码。
-- 当前 Claude 脚本只接收显式传入的文本，不会自动看到浏览器或项目文件。Codex 观察页面后将结构和发现整理回传；直接读取截图不属于已经验收的能力。
+- You own business judgement, on-site information and the final presentation. Correct assumptions about users, pain points and input material promptly; Codex handles technical implementation.
+- Codex owns scope, technical choices, code, dependencies, runtime, browser operations, screenshots, tests and integration. Codex invokes Claude through the project PowerShell script.
+- Claude provides visual and interaction proposals, component suggestions, copy and design reviews. Its default response is text; it does not edit project code.
+- The current wrapper receives explicitly supplied text and does not automatically see the browser or project files. Codex observes the interface and sends structured findings back. Direct screenshot reading by Claude is not a verified capability of this wrapper.
+- Documentation, task prompts, design briefs and user-facing text are in English. Explanatory comments in project-owned code are bilingual, English and Chinese.
 
-## 并行约定
+## Session coordination
 
-默认保持一个 Codex 实现会话和一个 Claude 设计会话。初期由 Codex 维护输入输出样例、字段含义和验收标准，两边使用同一版本的任务单。
+Start with one Codex implementation session and one Claude design session. Codex maintains input/output examples, field meanings and acceptance criteria; both sessions use the same version of the brief.
 
-只有出现可独立完成的任务时才增加第三个会话，优先安排只读代码评审、数据整理或演示文案；不预先启动大量代理。任务交接写清目标、输入、输出位置、允许修改的文件和验收标准。
+Add a third session only for an independent task, preferably a read-only code review, data preparation or presentation copy. Do not start a large agent team in advance. Each handoff states the objective, inputs, output location, writable files and acceptance criteria.
 
-同一文件只设一个写入者。依赖安装、锁文件、共享数据类型、应用入口和最终合并由 Codex 主会话统一处理；Claude 不直接修改这些文件。若队友也在开发，先明确模块与接口，通过独立提交或补丁集成，避免同时编辑 Dropbox 中的同一文件。
+Assign one writer per file. The main Codex session controls dependency installation, lockfiles, shared data types, application entry points and final integration. Claude does not edit those files. If teammates also code, agree modules and interfaces first, integrate independent commits or patches, and avoid concurrent edits to the same Dropbox file.
 
-## AI 运行资源与故障处理
+## AI runtime and failures
 
-前 30 分钟内验证最终演示所需的真实 AI 路径。工具订阅已验证可用，应用运行时接口尚未建设；不能据此假定网页已经能调用 AI。
+Validate the real AI path needed by the final demo during the first 30 minutes. Developer subscriptions have been tested, but the application's runtime interface has not yet been built.
 
-- 有主办方或已有可用 API 时，确认供应商、额度和允许用途，做一次真实输入输出验证；密钥由本机环境管理，不粘贴到聊天或写入前端。
-- 没有 API 时，尽早决定是否采用现场允许的本机 CLI 驱动工作流演示；它仍需要按赛题验证真实处理流程。若提交明确要求网页内实时 AI，则先解决运行资源，不能用固定示例代替该要求。
-- Claude 暂时失败时，Codex 继续按已确认方案做独立工作，保留错误记录。调用有超时上限，避免所有工作一起等待。
-- 演示时准备保存的示例、截图和短录屏，并明确哪些是实时生成、哪些是预先保存；不临近截止时间新增基础设施。
+- If organizer-provided or existing API access is available, confirm the provider, quota and permitted usage, then test a real input/output pair. Manage keys through the local environment; do not paste them into chat or put them in frontend code.
+- Without an API, decide early whether an on-site-permitted local CLI-driven workflow is suitable, and verify real processing for the selected challenge. If the submission requires live AI inside the web application, resolve that runtime requirement rather than substituting a fixed example.
+- If Claude temporarily fails, Codex continues independent work using the agreed design and keeps the error evidence. Requests have a timeout; avoid blocking every workstream on the same request.
+- Keep saved examples, screenshots and a short recording, clearly distinguishing live generation from saved results. Do not add infrastructure near the deadline.
+
+## Online publication
+
+The empty Vercel project `aibe-hackathon` is connected to `wlxin-nus/AIBE-Hackathon`. Publication is currently disabled by request through `git.deploymentEnabled: false` in `vercel.json`. Commits and pushes still synchronize code. Enable and validate deployment only once publication is authorized, then check the shared site without a signed-in account while retaining the local demo backup.

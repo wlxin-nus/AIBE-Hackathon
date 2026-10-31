@@ -7,7 +7,9 @@ const resultEvent = { type: 'result', subtype: 'success', is_error: false, resul
 
 test('stdin is closed, literal prompt survives, and completed response is required', async () => {
   const code = `let input=''; process.stdin.setEncoding('utf8').on('data', x=>input+=x).on('end',()=>console.log(JSON.stringify({...${JSON.stringify(resultEvent)},result:input})));`;
-  const prompt = '中文 space $() ` literal\nsecond line';
+  // Keep Chinese UTF-8 coverage alongside literal shell metacharacters.
+  // 保留中文 UTF-8 覆盖，同时验证 Shell 特殊字符按原样传递。
+  const prompt = '\u4e2d\u6587 space $() ` literal\nsecond line';
   const run = await execute(process.execPath, ['-e', code], prompt, { timeoutMs: 3000 });
   assert.equal(summarize(run).status, 'success');
   assert.equal(summarize(run).response, prompt);
