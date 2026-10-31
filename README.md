@@ -33,7 +33,9 @@ Start the current two-phone experiment:
 node .\prototype\server.cjs
 ```
 
-Open the desktop and phone URLs printed by the server. It generates a new room code on each start. Manual position synchronization has been verified on both iPhones; automatic indoor positioning remains unverified. Open `/concept` for the static Claude Opus 5.5 high design proposal. See [phase-one findings and next steps](docs/comfort-phase-one.md) and [design provenance](design/README.md).
+Open the desktop and phone URLs printed by the server. Each phone user joins, sets a comfort range and taps the room plan. The desktop uses the supplied FCU axonometric model to show live presence, eight cooling zones and simulated setpoints. Rotate the model or change a phone's position to follow its zone assignment. A shared range yields a target inside that range. A conflict holds the 25 °C scenario baseline and asks for review.
+
+Both iPhones demonstrated manual position sharing. The integrated 3D flow was also exercised with two browser participants. GPS testing is paused. Room codes are generated on startup unless `COMFORT_ROOM` is set. The historical static design study is available at `/concept`. See [phase-one findings](docs/comfort-phase-one.md).
 
 Run the experiment and tool tests:
 

@@ -1,5 +1,134 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Common Climate — connection lab</title><link rel="stylesheet" href="/style.css"></head>
-<body data-view="desktop"><header><div><strong>Common Climate</strong><span class="muted"> Connection lab</span></div><nav><a href="/concept" target="_blank">Design proposal</a><span id="connection" role="status">Connecting…</span></nav></header>
-<main class="desktop"><aside><h1>Two phones.<br>One shared canvas.</h1><p>This experiment verifies participation, preferences and position updates before a floor plan is selected.</p><label>Room code<input id="room" inputmode="numeric" maxlength="6"></label><button id="connect">Connect dashboard</button><p id="join-link" class="break"></p><p class="note">Count = active, opted-in browser sessions. It does not detect everyone inside a building.</p><section><h2>Positioning truth</h2><p><b>Manual:</b> a person taps their location on the phone canvas.</p><p><b>GPS:</b> permission and accuracy diagnostic only; trusted HTTPS is required on phones.</p><p><b>Bluetooth:</b> capability check only.</p></section><a id="phone-link" href="/phone" target="_blank">Open a participant view</a></aside>
-<section class="workspace"><div class="canvas-title"><div><h2>Shared test canvas</h2><p>No floor plan or physical scale assigned.</p></div><div class="count"><b id="count">0</b><span>active participants</span></div></div><div class="canvas-wrap"><svg id="plan" viewBox="0 0 1000 600" role="img" aria-label="Live participant positions on an abstract test canvas"><defs><pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#d9e3e5" stroke-width="1"/></pattern></defs><rect width="1000" height="600" fill="url(#grid)"/><g id="markers"></g></svg><div id="empty" class="empty">Waiting for a participant to share a position</div></div><div class="legend"><span><i></i>Participant presence halo</span><span>Not a temperature field or calibrated density estimate</span></div><p id="status" role="status"></p><div id="people" class="people"></div></section></main><script src="/client.js"></script></body></html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Common Climate · Live comfort floor</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#eeede7;color:#354039;font-family:Arial,sans-serif;-webkit-font-smoothing:antialiased}main{max-width:1600px;margin:auto;padding:38px 42px 24px}header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:26px;gap:25px}.eyebrow{font-size:9px;letter-spacing:3px;color:#8b907f;margin:0 0 13px;font-weight:600}h1{font-family:Georgia,serif;font-size:40px;font-weight:400;letter-spacing:-1px;margin:0 0 12px}header p{font-size:12px;color:#8a9184;margin:0;line-height:1.7}.issue{text-align:right;font-size:9px;letter-spacing:2px;color:#909786}.issue strong{display:block;font-family:Georgia,serif;font-size:36px;font-weight:400;letter-spacing:-1px;color:#b1b7a7;margin-bottom:6px}.sheet{border:1px solid #d9ddcf;background:#fafaf5;box-shadow:0 18px 60px #424b350a}.toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:22px;padding:16px 23px;border-bottom:1px solid #e5e7db}.toolbar-title{font-size:10px;letter-spacing:1.8px;margin-right:auto;font-weight:600}.legend{display:flex;align-items:center;gap:8px;color:#858e7d;font-size:10px}.swatch{width:13px;height:13px;border-radius:3px;background:#88afa6;border:1px solid #557f73}.swatch.furniture{background:#e5decf;border-color:#bfc4b1}.controls{display:flex;gap:6px;align-items:center}.controls button,.export{font-family:inherit;border:1px solid #d9dfcf;background:#f8f9f1;color:#64765d;font-size:10px;padding:8px 11px;cursor:pointer;border-radius:4px;transition:background .15s}.controls button:hover,.export:hover{background:#e8eddf}button:focus-visible,input:focus-visible{outline:2px solid #628e7a;outline-offset:3px}.viewer{position:relative;background:radial-gradient(ellipse at 50% 70%,#f0f1e7 0%,#fafaf5 65%);overflow:hidden}.viewer svg{width:100%;height:auto;display:block;cursor:grab;touch-action:none}.viewer svg.dragging{cursor:grabbing}.unit-label{font-family:Arial,sans-serif;fill:#3d7467;font-size:14px;font-weight:600;letter-spacing:.8px;text-anchor:middle;paint-order:stroke;stroke:#fafaf5;stroke-width:4;stroke-linejoin:round}.platform-label{font-family:Arial,sans-serif;fill:#917950;font-size:10px;letter-spacing:1px;text-anchor:middle;paint-order:stroke;stroke:#e3cfab;stroke-width:2}.view-caption{position:absolute;left:24px;top:23px;pointer-events:none}.view-caption b{font-size:10px;font-weight:500;letter-spacing:2px;display:block;color:#7d8b73}.view-caption span{font-size:9px;letter-spacing:1.1px;display:block;color:#a6ad9e;margin-top:8px}.hint{position:absolute;bottom:20px;left:24px;font-size:9px;letter-spacing:.7px;color:#9ca694;pointer-events:none}.zoom{position:absolute;bottom:16px;right:20px;display:flex;gap:4px}.zoom button{font-size:16px;min-width:31px;padding:4px}.bottom{border-top:1px solid #e5e7db;display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px 23px}.metrics{display:flex;gap:28px}.metric{display:flex;gap:7px;align-items:baseline}.metric b{font-family:Georgia,serif;font-size:24px;font-weight:400;color:#677b5e}.metric span{font-size:9px;letter-spacing:1.2px;color:#929d87}.layers{display:flex;gap:18px;align-items:center}.layers label{font-size:10px;color:#7d8c71;display:flex;gap:7px;align-items:center;cursor:pointer}.layers input{accent-color:#668c75;width:12px;height:12px;margin:0}.export{background:#657d63;color:#fff;border-color:#657d63}.export:hover{background:#526d51}footer{display:flex;justify-content:space-between;gap:28px;color:#969e8d;font-size:10px;line-height:1.8;margin-top:17px}footer p{margin:0;max-width:850px}.rev{white-space:nowrap;font-size:9px;letter-spacing:1px}
+@media(max-width:850px){main{padding:23px 14px}h1{font-size:30px}.toolbar{padding:13px;gap:14px}.toolbar-title{width:100%}.bottom{flex-wrap:wrap;padding:14px}.layers{flex-wrap:wrap}.metrics{gap:22px}.issue strong{font-size:27px}.hint{font-size:8px;left:14px}.view-caption{top:14px;left:14px}.view-caption b{font-size:8px}.view-caption span{font-size:8px}footer{flex-direction:column;gap:6px}}
+@media print{body{background:white}main{padding:0}header{margin-bottom:15px}h1{font-size:28px}.sheet{box-shadow:none}.controls,.layers,.export,.zoom,.hint{display:none}.toolbar,.bottom{padding:10px 18px}@page{size:A4 landscape;margin:10mm}}
+</style>
+<link rel="stylesheet" href="/style.css"></head>
+<body data-view="desktop"><main>
+<header class="mast"><div><p class="eyebrow">COMMON CLIMATE &nbsp; / &nbsp; WORKPLACE OPERATIONS</p><h1>The comfort floor</h1><p>See who is here, what feels comfortable, and which cooling zones need attention.</p></div>
+<form id="connect-form" class="room-tools"><label>ROOM <input id="room" aria-label="Room code" inputmode="numeric" maxlength="6" size="7" required></label><button>Connect</button><span id="connection" role="status">Connecting…</span></form></header>
+<div class="live-layout"><section class="sheet" aria-label="Interactive 3D room">
+<div class="toolbar"><span class="toolbar-title">01 &nbsp; / &nbsp; LIVE SPATIAL VIEW</span><span class="legend"><i class="swatch"></i>FCU</span><span class="legend"><i class="presence-key"></i>Shared position</span>
+<div class="controls"><button id="reset">Reset view</button><button id="top">High view</button></div></div>
+<div class="viewer"><div class="view-caption"><b>OPEN CEILING / CUTAWAY</b><span id="angle">32° ELEVATION</span></div><svg id="model" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 940" role="img" aria-labelledby="model-title model-desc"><title id="model-title">Interactive axonometric classroom model</title><desc id="model-desc">Eight ceiling-mounted FCUs hover above fifteen two-seat desks. A raised teaching platform is on the left. Rear walls and an open ceiling reveal the vertical relationship between furniture and equipment. Drag to rotate and use the zoom buttons to change scale.</desc><defs><filter id="shadow"><feGaussianBlur stdDeviation="22"/></filter></defs><ellipse cx="770" cy="730" rx="550" ry="95" fill="#6f7f62" opacity=".08" filter="url(#shadow)"/><g id="scene"/><g id="live-dots" pointer-events="none"/></svg><div class="hint">DRAG TO ROTATE · SCROLL TO ZOOM</div><div class="controls zoom"><button id="zoom-out" aria-label="Zoom out">−</button><button id="zoom-in" aria-label="Zoom in">+</button></div></div>
+<div class="bottom"><div class="metrics"><div class="metric"><b>08</b><span>FCUs</span></div><div class="metric"><b>15</b><span>DESKS</span></div><div class="metric"><b>30</b><span>SEATS</span></div></div><div class="layers"><label><input type="checkbox" checked id="fcu-toggle">Overhead FCUs</label><label><input type="checkbox" checked id="furniture-toggle">Furniture</label></div><button class="export" id="export">Download 3D model (.obj)</button></div>
+</section>
+<aside class="rail"><p class="eyebrow">02 &nbsp; / &nbsp; ROOM SIGNALS</p><h2>Comfort overview</h2>
+<div class="signals"><div><b id="count">–</b><span>people sharing</span></div><div><b id="occupied">–</b><span>occupied FCUs / 8</span></div></div>
+<div class="section-head"><h3>Zone setpoints</h3><span class="pill">Simulation</span></div>
+<div id="zones" class="zones"></div><div id="detail" class="detail" aria-live="polite">Select a unit to inspect its comfort range.</div>
+<h3>Participants</h3><div id="people"></div><p id="status" role="status"></p>
+<a id="phone-link" class="text-link" href="/phone">Open participant view ↗</a></aside></div>
+<footer><p>Manual check-in · Nearest FCU defines the demo zone · 25 °C baseline · Energy impact unmeasured</p><p class="rev">COMMON CLIMATE / LIVE STUDY</p></footer></main>
+<script src="/client.js"></script><script>const NS='http://www.w3.org/2000/svg';
+const {fcus, desks, outline} = window.comfortFloor;
+const objects=[];
+const palette={desk:['#e5d6bd','#c8b99f','#d5c6ad'],seat:['#c4cfb9','#99aa91','#acbba2'],fcu:['#8eb8b0','#547e77','#709b93']};
+function mesh(name,points,faces,colors,kind='furniture'){const o={name,points,faces,colors,kind};objects.push(o);return o;}
+function box(name,x,y,z,w,d,h,colors,kind='furniture'){
+ return mesh(name,[[x,y,z],[x+w,y,z],[x+w,y+d,z],[x,y+d,z],[x,y,z+h],[x+w,y,z+h],[x+w,y+d,z+h],[x,y+d,z+h]],[[0,3,2,1],[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7]],[colors[1],colors[1],colors[2],colors[1],colors[2],colors[0]],kind);
+}
+// All heights are conceptual drawing units, rather than measured dimensions. / 所有高度均为示意绘图单位。
+const floorPoints=outline.map(([x,y])=>[x,y,-20]).concat(outline.map(([x,y])=>[x,y,0]));
+const n=outline.length;
+const floorFaces=[];
+for(let i=0;i<n;i++)floorFaces.push([i,(i+1)%n,(i+1)%n+n,i+n]);
+floorFaces.push(Array.from({length:n},(_,i)=>i+n));
+mesh('Room slab',floorPoints,floorFaces,floorFaces.map((_,i)=>i===n?'#f4f3e9':'#cecec0'),'floor');
+// Full-height rear walls, with open front and side for an unobstructed cutaway. / 后墙完整，前侧敞开以展示剖切视图。
+for(const [i,j] of [[1,2],[2,3],[3,4]]){
+const a=outline[i],b=outline[j];
+mesh('Rear wall',[[...a,0],[...b,0],[...b,325],[...a,325]],[[0,1,2,3]],['#eceee4'],'wall');
+}
+// Low perimeter upstand traces the original curved room edge. / 低矮的围边沿房间弧线布置。
+for(let i=4;i<n-1;i++){
+const a=outline[i],b=outline[i+1];
+mesh('Perimeter edge',[[...a,0],[...b,0],[...b,24],[...a,24]],[[0,1,2,3]],['#b8c1b0'],'edge');
+}
+box('Teaching platform',70,450,0,210,590,30,['#ddc69f','#bfa77e','#cdb58e'],'platform');
+// A slim lectern makes the teaching area legible in the axonometric view. / 讲台用于标识授课区。
+box('Lectern base',145,690,30,44,78,5,['#c5ae87','#a28c6a','#b8a07b'],'platform');
+box('Lectern body',151,699,35,32,60,71,['#dfcba9','#bca580','#ccb591'],'platform');
+box('Lectern top',140,688,106,54,82,8,['#ead9ba','#bca580','#ccb591'],'platform');
+desks.forEach(([x,y],i)=>{
+ const w=62.4,d=97.5;
+ // Small two-seat desks, matching the reduced furniture footprint in plan. / 双人桌与平面图上的家具位置对应。
+ for(const dx of [-25,25])for(const dy of [-40,40])box(`Desk ${i+1} leg`,x+dx-2,y+dy-2,0,4,4,62,['#b3baaa','#9aa490','#a5af9c']);
+ box(`Desk ${i+1}`,x-w/2,y-d/2,62,w,d,6,palette.desk);
+ for(const dy of [-26,26]){
+ const cx=x+52.65,cy=y+dy;
+ for(const dx of [-10,10])for(const ey of [-11,11])box(`Chair ${i+1} leg`,cx+dx-1.3,cy+ey-1.3,0,2.6,2.6,34,['#aab59d','#929f87','#9caa92']);
+ box(`Chair ${i+1} seat`,cx-13,cy-13.65,34,26,27.3,5,palette.seat);
+ box(`Chair ${i+1} back`,cx+9,cy-15.6,39,5.8,31.2,31,palette.seat);
+ }
+});
+fcus.forEach(([x,y],i)=>{
+ box(`FCU ${String(i+1).padStart(2,'0')}`,x-47,y-47,270,94,94,17,palette.fcu,'fcu');
+ box(`FCU ${i+1} inset`,x-34,y-34,287.2,68,68,1.4,['#b4d0c8','#8eb4aa','#8eb4aa'],'fcu-detail');
+ for(let k=-2;k<=2;k++)box(`FCU ${i+1} grille`,x-23,y+k*8-1,289,46,2,0.8,['#719990','#719990','#719990'],'fcu-detail');
+});
+let yaw=-26, pitch=32, zoom=1, showFCU=true, showFurniture=true;
+let camera={};
+function projectRaw(p){const a=yaw*Math.PI/180,b=pitch*Math.PI/180;const u=p[0]-840,v=p[1]-550;const x=Math.cos(a)*u-Math.sin(a)*v;const d=Math.sin(a)*u+Math.cos(a)*v;return [x,Math.sin(b)*d-Math.cos(b)*p[2],Math.cos(b)*d+Math.sin(b)*p[2]];}
+function project(p){const q=projectRaw(p);return [(q[0]-camera.cx)*camera.s+750,(q[1]-camera.cy)*camera.s+470,q[2]];}
+function el(tag,attrs={}){const node=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);return node;}
+function label(parent,p,text,cls){const q=project(p);const t=el('text',{x:q[0],y:q[1],class:cls});t.textContent=text;parent.appendChild(t);}
+function render(){
+ const projected=objects.flatMap(o=>o.points.map(projectRaw));
+ const xs=projected.map(p=>p[0]),ys=projected.map(p=>p[1]);
+ const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+ camera={cx:(minX+maxX)/2,cy:(minY+maxY)/2,s:Math.min(1300/(maxX-minX),720/(maxY-minY))*zoom};
+ const scene=document.getElementById('scene');scene.replaceChildren();
+ const floorGroup=el('g'),wallGroup=el('g'),meshGroup=el('g');scene.append(floorGroup,wallGroup,meshGroup);
+ let faces=[];
+ for(const o of objects){
+ if(!showFCU&&o.kind.startsWith('fcu'))continue;
+ if(!showFurniture&&o.kind==='furniture')continue;
+ const ps=o.points.map(project);
+ o.faces.forEach((face,i)=>{
+ const points=face.map(j=>ps[j]);
+ // Back-face culling for box surfaces. Room shell uses two-sided faces. / 箱体隐藏背面，房间外壳使用双面绘制。
+ const cross=(points[1][0]-points[0][0])*(points[2][1]-points[0][1])-(points[1][1]-points[0][1])*(points[2][0]-points[0][0]);
+ if(o.points.length===8&&cross<=0)return;
+ faces.push({o,points,color:o.colors[i],depth:points.reduce((s,p)=>s+p[2],0)/points.length});
+ });
+ }
+ faces.sort((a,b)=>a.depth-b.depth);
+ for(const f of faces){
+ const attrs={points:f.points.map(p=>p.slice(0,2).join(',')).join(' '),fill:f.color,stroke:f.o.kind.startsWith('fcu')?'#426f68':'#747e6c','stroke-width':f.o.kind==='fcu'?1.25:.45,'stroke-opacity':f.o.kind.startsWith('fcu')?.7:.2,'stroke-linejoin':'round'};
+ if(f.o.kind==='wall'){attrs['fill-opacity']=.52;attrs.stroke='#adb7a4';attrs['stroke-opacity']=.5;attrs['stroke-width']=1;}
+ if(f.o.kind==='fcu')attrs['fill-opacity']=.85;
+ if(f.o.kind==='furniture')attrs.opacity=.68;
+ const poly=el('polygon',attrs);
+ if(f.o.kind==='floor')floorGroup.appendChild(poly);else if(f.o.kind==='wall'||f.o.kind==='edge')wallGroup.appendChild(poly);else meshGroup.appendChild(poly);
+ }
+ // Ground projections make the relationship between ceiling units and floor explicit. / 地面投影标识顶部设备的位置。
+ if(showFCU){const ground=el('g',{'pointer-events':'none'});scene.insertBefore(ground,meshGroup);
+ fcus.forEach(([x,y])=>{const pts=[[-47,-47],[47,-47],[47,47],[-47,47]].map(([a,b])=>project([x+a,y+b,1]));ground.appendChild(el('polygon',{points:pts.map(p=>p.slice(0,2).join(',')).join(' '),fill:'#6c9587','fill-opacity':.06,stroke:'none'}));});
+ const labels=el('g',{'pointer-events':'none'});scene.appendChild(labels);fcus.forEach(([x,y],i)=>label(labels,[x,y,310],`FCU ${String(i+1).padStart(2,'0')}`,'unit-label'));
+ }
+ label(scene,[165,930,34],'TEACHING PLATFORM','platform-label');
+ window.drawComfortPresence?.();
+ document.getElementById('angle').textContent=`${Math.round(pitch)}° ELEVATION`;
+}
+window.projectComfortPoint = project;
+function reset(){yaw=-26;pitch=32;zoom=1;render();}
+let drag=null;
+const svg=document.getElementById('model');
+svg.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,yaw,pitch};svg.setPointerCapture(e.pointerId);svg.classList.add('dragging');});
+svg.addEventListener('pointermove',e=>{if(!drag)return;yaw=drag.yaw+(e.clientX-drag.x)*.22;pitch=Math.max(18,Math.min(72,drag.pitch-(e.clientY-drag.y)*.14));render();});
+svg.addEventListener('pointerup',()=>{drag=null;svg.classList.remove('dragging');});
+svg.addEventListener('pointercancel',()=>{drag=null;svg.classList.remove('dragging');});
+svg.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.65,Math.min(1.6,zoom*(e.deltaY>0?.94:1.06)));render();},{passive:false});
+document.getElementById('reset').onclick=reset;
+document.getElementById('top').onclick=()=>{yaw=0;pitch=72;zoom=1;render();};
+document.getElementById('fcu-toggle').onchange=e=>{showFCU=e.target.checked;render();};
+document.getElementById('furniture-toggle').onchange=e=>{showFurniture=e.target.checked;render();};
+document.getElementById('zoom-in').onclick=()=>{zoom=Math.min(1.6,zoom+.1);render();};
+document.getElementById('zoom-out').onclick=()=>{zoom=Math.max(.65,zoom-.1);render();};
+function exportOBJ(){let lines=['# Classroom concept model. Units are illustrative, not measured.'];let offset=1;for(const o of objects){lines.push('o '+o.name.replaceAll(' ','_'));for(const [x,y,z]of o.points)lines.push(`v ${x} ${z} ${-y}`);for(const face of o.faces)lines.push('f '+face.map(i=>i+offset).join(' '));offset+=o.points.length;}return lines.join('\n');}
+document.getElementById('export').onclick=()=>{const blob=new Blob([exportOBJ()],{type:'text/plain'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='classroom-fcu-model.obj';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+render();
+</script></body></html>
