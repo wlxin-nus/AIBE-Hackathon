@@ -80,6 +80,7 @@ function createProbe({ room = String(randomInt(100000, 1000000)), now = Date.now
       const routes = {
         '/': ['index.html', 'text/html'], '/phone': ['phone.html', 'text/html'],
         '/style.css': ['style.css', 'text/css'], '/client.js': ['client.js', 'text/javascript'],
+        '/comfort.css': ['comfort.css', 'text/css'], '/model.js': ['model.js', 'text/javascript'],
         '/concept': ['../design/comfort-concept.html', 'text/html']
       };
       const route = routes[url.pathname];
@@ -100,7 +101,7 @@ if (require.main === module) {
   const port = Number(process.env.PORT || 4174);
   probe.server.listen(port, '0.0.0.0', () => {
     const addresses = Object.values(os.networkInterfaces()).flat().filter(a => a.family === 'IPv4' && !a.internal && !a.address.startsWith('169.254.'));
-    console.log(JSON.stringify({ room: probe.room, desktop: `http://localhost:${port}/?room=${probe.room}`, phone: addresses.map(a => `http://${a.address}:${port}/phone?room=${probe.room}`), note: 'LAN test only. HTTP cannot provide phone geolocation. No HVAC commands are sent.' }, null, 2));
+    console.log(JSON.stringify({ room: probe.room, desktop: `http://localhost:${port}/?room=${probe.room}`, phone: addresses.map(a => `http://${a.address}:${port}/phone?room=${probe.room}`), note: 'LAN demo with manually reported positions. No HVAC commands are sent.' }, null, 2));
   });
   for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => probe.server.close(() => process.exit(0)));
 }

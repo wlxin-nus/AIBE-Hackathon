@@ -1,5 +1,13 @@
 # AIBE-Hackathon
 
+## Current demo: integrated classroom UI
+
+The main dashboard now uses the user-supplied `fcu-3d.html` model: eight FCUs, fifteen two-seat desks, rotation, zoom, layer controls and OBJ export. The original geometry and visual direction are adapted in `prototype/model.js` and `prototype/comfort.css`. Open `/` for the live dashboard and `/phone` for participation; `/concept` remains the earlier static proposal.
+
+Participants opt in, enter a comfort range and manually select a seat from 01A to 15B. The shared dashboard shows their positions and preferences. GPS and Bluetooth diagnostics have been removed from the active UI. Nearest-FCU grouping is illustrative, not verified HVAC coverage. Suggested zone-air temperatures clamp the mean preference to the shared acceptable interval; disjoint ranges require review, and empty groups receive no suggestion. No equipment commands are sent.
+
+Run `node prototype/server.cjs` and use its printed URLs and room code. Phones must reach the laptop on the same network. Keep the participant page foregrounded. Browser checks verified two distinct participants, seat synchronization, a conflicting-range state and the high-view control; the existing server integration test passed. This version has not yet been rechecked on physical iPhones. Publication remains disabled.
+
 Tools and prototypes for an AI for the Built Environment and Urbanism hackathon. The selected challenge is **People-Centred Low-Carbon Portfolios**. The current experiment connects two iPhones to a shared workplace-comfort canvas. The default application stack is React, TypeScript, Vite and npm; the first connectivity experiment uses Node.js without additional dependencies.
 
 **Hard development deadline: before 14:00 on 2026-10-31, Singapore time (UTC+8, the same as Shanghai).** Target a demo-ready version by 13:45 to retain a final submission buffer. This deadline applies to both Codex and Claude work.
