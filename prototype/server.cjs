@@ -81,6 +81,7 @@ function createProbe({ room = String(randomInt(100000, 1000000)), now = Date.now
         '/': ['index.html', 'text/html'], '/phone': ['phone.html', 'text/html'],
         '/style.css': ['style.css', 'text/css'], '/client.js': ['client.js', 'text/javascript'],
         '/comfort.css': ['comfort.css', 'text/css'], '/model.js': ['model.js', 'text/javascript'],
+        '/thermal.js': ['thermal.js', 'text/javascript'], '/plan.js': ['plan.js', 'text/javascript'],
         '/concept': ['../design/comfort-concept.html', 'text/html']
       };
       const route = routes[url.pathname];

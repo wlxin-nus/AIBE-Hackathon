@@ -1,9 +1,7 @@
 (() => {
 const NS='http://www.w3.org/2000/svg';
-const fcus=[[420,820],[420,560],[750,820],[750,560],[1040,700],[1035,205],[1375,530],[1370,220]];
-const desks=[450,650,850].flatMap(y=>[405,680,1000,1320].map(x=>[x,y])).concat([960,1180,1400].map(x=>[x,195]));
-const outline=[[70,1040],[70,305],[830,305],[830,70],[1610,70],[1610,620]];
-for(let i=1;i<=24;i++){let t=i/24;outline.push([(1-t)*(1-t)*1610+2*(1-t)*t*1610+t*t*1100,(1-t)*(1-t)*620+2*(1-t)*t*1040+t*t*1040]);}
+const thermal=window.ComfortThermal;
+const {fcus,desks,outline,seats}=thermal;
 const objects=[];
 const palette={desk:['#e5d6bd','#c8b99f','#d5c6ad'],seat:['#c4cfb9','#99aa91','#acbba2'],fcu:['#8eb8b0','#547e77','#709b93']};
 function mesh(name,points,faces,colors,kind='furniture'){const o={name,points,faces,colors,kind};objects.push(o);return o;}
@@ -50,8 +48,7 @@ fcus.forEach(([x,y],i)=>{
  for(let k=-2;k<=2;k++)box(`FCU ${i+1} grille`,x-23,y+k*8-1,289,46,2,0.8,['#719990','#719990','#719990'],'fcu-detail');
 });
 let yaw=-26, pitch=32, zoom=1, showFCU=true, showFurniture=true;
-let camera={}, participants=[];
-const seats=desks.flatMap(([x,y],i)=>[-26,26].map((dy,j)=>({id:`${String(i+1).padStart(2,'0')}${j?'B':'A'}`,x:x+52.65,y:y+dy})));
+let camera={}, participants=[], groups=thermal.zones([]), showThermal=true, participantSignature='';
 function projectRaw(p){const a=yaw*Math.PI/180,b=pitch*Math.PI/180;const u=p[0]-840,v=p[1]-550;const x=Math.cos(a)*u-Math.sin(a)*v;const d=Math.sin(a)*u+Math.cos(a)*v;return [x,Math.sin(b)*d-Math.cos(b)*p[2],Math.cos(b)*d+Math.sin(b)*p[2]];}
 function project(p){const q=projectRaw(p);return [(q[0]-camera.cx)*camera.s+750,(q[1]-camera.cy)*camera.s+470,q[2]];}
 function el(tag,attrs={}){const node=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))node.setAttribute(k,v);return node;}
@@ -82,13 +79,32 @@ function render(){
  if(f.o.kind==='wall'){attrs['fill-opacity']=.52;attrs.stroke='#adb7a4';attrs['stroke-opacity']=.5;attrs['stroke-width']=1;}
  if(f.o.kind==='fcu')attrs['fill-opacity']=.85;
  if(f.o.kind==='furniture')attrs.opacity=.68;
+ if(f.o.kind==='fcu'){const index=Number(f.o.name.split(' ')[1])-1;attrs.fill=thermal.colour(groups[index].target);attrs.stroke=groups[index].conflict?'#a74935':'#426f68';attrs['stroke-width']=groups[index].conflict?3:1.25;}
  const poly=el('polygon',attrs);
  if(f.o.kind==='floor')floorGroup.appendChild(poly);else if(f.o.kind==='wall'||f.o.kind==='edge')wallGroup.appendChild(poly);else meshGroup.appendChild(poly);
+ }
+
+ if(showThermal){
+ const heat=el('g',{'pointer-events':'none'});
+ const clip=el('clipPath',{id:'thermal-floor-clip'});clip.appendChild(el('polygon',{points:outline.map(([x,y])=>project([x,y,1]).slice(0,2).join(',')).join(' ')}));heat.appendChild(clip);
+ const cells=el('g',{'clip-path':'url(#thermal-floor-clip)'});heat.appendChild(cells);
+ for(let x=70;x<1610;x+=55)for(let y=70;y<1040;y+=55){
+  const points=[[x,y],[x+56,y],[x+56,y+56],[x,y+56]].map(([a,b])=>project([a,b,1]).slice(0,2).join(',')).join(' ');
+  cells.appendChild(el('polygon',{points,fill:thermal.colour(thermal.temperature(x+27,y+27,groups)),opacity:.65}));
+ }
+ scene.insertBefore(heat,wallGroup);
  }
  // Ground projections make the relationship between ceiling units and floor explicit. 地面投影用于展示天花机组与地面的对应关系。
  if(showFCU){const ground=el('g',{'pointer-events':'none'});scene.insertBefore(ground,meshGroup);
  fcus.forEach(([x,y])=>{const pts=[[-47,-47],[47,-47],[47,47],[-47,47]].map(([a,b])=>project([x+a,y+b,1]));ground.appendChild(el('polygon',{points:pts.map(p=>p.slice(0,2).join(',')).join(' '),fill:'#6c9587','fill-opacity':.06,stroke:'none'}));});
- const labels=el('g',{'pointer-events':'none'});scene.appendChild(labels);fcus.forEach(([x,y],i)=>label(labels,[x,y,310],`FCU ${String(i+1).padStart(2,'0')}`,'unit-label'));
+ const labels=el('g',{'pointer-events':'none'});scene.appendChild(labels);fcus.forEach(([x,y],i)=>label(labels,[x,y,310],`FCU ${String(i+1).padStart(2,'0')} · ${groups[i].target.toFixed(1)}°${groups[i].conflict?' !':''}`,'unit-label'));
+ }
+
+ if(showFCU&&showThermal){const flow=el('g',{'pointer-events':'none'});scene.appendChild(flow);
+ groups.forEach(g=>{if(g.idle)return;for(const offset of [-32,0,32]){
+ const a=project([g.point[0]+offset,g.point[1],265]),b=project([g.point[0]+offset*2,g.point[1]+35,10]);
+ flow.appendChild(el('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:thermal.colour(g.target),'stroke-width':3,'stroke-dasharray':'7 7',class:'airflow',opacity:.8}));
+ }});
  }
  label(scene,[165,930,34],'TEACHING PLATFORM','platform-label');
  if(showFurniture)desks.forEach(([x,y],i)=>label(scene,[x-42,y,72],String(i+1).padStart(2,'0'),'desk-label'));
@@ -126,8 +142,10 @@ render();
 
 window.ComfortModel={
  seats,fcus,
- setParticipants(people){participants=people;render();},
- nearestFCU(position){if(!position)return null;let best=0;fcus.forEach(([x,y],i)=>{const [bx,by]=fcus[best];if(Math.hypot(x-position.x*1700,y-position.y*1100)<Math.hypot(bx-position.x*1700,by-position.y*1100))best=i;});return best;},
+ setParticipants(people){const signature=JSON.stringify(people.map(({id,alias,position,profile,colour})=>({id,alias,position,profile,colour})));if(signature===participantSignature)return;participantSignature=signature;participants=people;groups=thermal.zones(people);render();window.ComfortPlan?.update(people);},
+ getZones(){return groups;},
+ setThermal(active){showThermal=active;render();},
+ nearestFCU:thermal.nearest,
  seatFor(position){if(!position)return null;return seats.find(s=>Math.abs(s.x/1700-position.x)<.001&&Math.abs(s.y/1100-position.y)<.001);}
 };
 })();

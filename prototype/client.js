@@ -3,7 +3,7 @@ const $ = id => document.getElementById(id);
 const phone = document.body.dataset.view === 'phone';
 const model = window.ComfortModel;
 let room = new URLSearchParams(location.search).get('room') || '';
-let session = null, position = null, pollVersion = 0;
+let session = null, position = null, pollVersion = 0, roomPeople = [];
 $('room').value = room;
 const status = message => { $('status').textContent = message; };
 function profile() {
@@ -24,13 +24,26 @@ function sharing(active) {
   $('connection').textContent = active ? 'Sharing with room' : 'Not sharing';
   $('join').disabled = active; $('save').disabled = !active; $('leave').disabled = !active;
   $('alias').readOnly = active; $('room').readOnly = active;
-  document.querySelectorAll('[data-seat]').forEach(b => { b.disabled = !active; });
+  $('seat-select').disabled = !active;
+  window.ComfortPlan.setEnabled(active);
   if (!active) $('position-label').textContent = 'Join the room to choose a seat.';
 }
 function drawSelf() {
-  model.setParticipants(position ? [{ position, colour: '#ad4d71', alias: $('alias').value }] : []);
-  const seat = model.seatFor(position);
-  document.querySelectorAll('[data-seat]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.seat === seat?.id)));
+  const others = session ? roomPeople.filter(p=>p.id!==session.id) : [];
+  model.setParticipants(position&&session ? [...others,{id:session.id,position,profile:session.profile,colour:session.colour||'#177c86',alias:$('alias').value}] : others);
+  const seat=model.seatFor(position);
+  $('seat-select').value=seat?.id||'';
+  window.ComfortPlan.setSelected(seat?.id||null);
+  if(position&&session){const zone=model.getZones()[model.nearestFCU(position)];$('position-label').textContent='Seat '+(seat?.id||'manual')+' · FCU '+String(model.nearestFCU(position)+1).padStart(2,'0')+' · '+zone.target.toFixed(1)+' °C simulated'+(zone.conflict?' · Comfort conflict: provisional compromise, review required.':' · Shared acceptable range '+zone.lower+'–'+zone.upper+' °C');}
+}
+async function refreshPhone(){
+  if(!session)return;
+  const id=session.id,state=await api('state');
+  if(!session||id!==session.id)return;
+  roomPeople=state.participants;
+  const own=roomPeople.find(p=>p.id===session.id);
+  if(own){session.profile=own.profile;session.colour=own.colour;}
+  drawSelf();
 }
 async function sync(body = {}) {
   if (!session) throw new Error('Join the room before sharing.');
@@ -60,20 +73,16 @@ function renderState(state) {
   let conflicts = 0;
   $('fcu-grid').replaceChildren();
   model.fcus.forEach((_,i) => {
-    const group = people.filter(p => model.nearestFCU(p.position) === i);
-    const lower = Math.max(...group.map(p => p.profile.minimum));
-    const upper = Math.min(...group.map(p => p.profile.maximum));
-    const conflict = group.length > 0 && lower > upper;
+    const zone = model.getZones()[i], group=zone.members, {lower,upper,conflict}=zone;
     if (conflict) conflicts++;
     const card = document.createElement('article'); card.className = 'fcu-card' + (conflict ? ' conflict' : '');
     const h = document.createElement('h3'); h.textContent = 'FCU ' + String(i+1).padStart(2,'0'); card.append(h);
-    const value = document.createElement('strong');
-    // Clamp the mean preference to the shared interval; never resolve conflicts silently. 将平均偏好限制在共同区间内；冲突必须明确显示。
-    const suggested = group.length && !conflict ? Math.min(upper, Math.max(lower, group.reduce((sum,p) => sum + p.profile.preferred,0)/group.length)) : null;
-    value.textContent = !group.length ? '—' : conflict ? 'Review needed' : suggested.toFixed(1) + ' °C';
-    card.append(value);
-    paragraph(card, group.length ? group.length + (group.length === 1 ? ' participant' : ' participants') : 'No seated participants');
-    paragraph(card, !group.length ? 'No suggestion' : conflict ? 'Acceptable ranges do not overlap.' : 'Shared range ' + lower + '–' + upper + ' °C');
+    const value = document.createElement('strong');value.textContent=zone.target.toFixed(1)+' °C';card.append(value);
+    card.style.borderTop='4px solid '+window.ComfortThermal.colour(zone.target);
+    paragraph(card,zone.idle?'Scenario baseline · no occupants':group.length+' participant'+(group.length===1?'':'s'));
+    paragraph(card,zone.idle?'25 °C assumed baseline':conflict?'Provisional compromise · '+zone.unmet+' outside their acceptable range':'Shared range '+lower+'–'+upper+' °C');
+    if(conflict)paragraph(card,'Conflict: lower limit '+lower+' °C exceeds upper limit '+upper+' °C. Review required.');
+    if(!zone.idle)paragraph(card,group.map(p=>p.alias+': '+p.profile.preferred+' °C preferred').join(' · '));
     $('fcu-grid').append(card);
   });
   $('conflict-count').textContent = conflicts;
@@ -92,24 +101,26 @@ if (!phone) {
   $('connect').onclick = () => { room = $('room').value.trim(); pollVersion++; history.replaceState(null,'','/?room='+encodeURIComponent(room)); links(); poll(); };
   renderState({participants:[]}); links(); poll(); setInterval(poll, 1000);
 } else {
-  for (const seat of model.seats) {
-    const button = document.createElement('button'); button.type = 'button'; button.dataset.seat = seat.id;
-    button.textContent = seat.id; button.setAttribute('aria-label', 'Select seat ' + seat.id); button.setAttribute('aria-pressed','false'); button.disabled = true;
-    button.onclick = async () => {
-      if (!session) return status('Join the room before choosing a seat.');
-      const next = { x:seat.x/1700, y:seat.y/1100, source:'manual' };
-      try { await sync({position:next}); position=next; drawSelf(); $('position-label').textContent='Seat ' + seat.id + ' · manually selected · FCU ' + String(model.nearestFCU(position)+1).padStart(2,'0') + ' group'; status('Your seat is shared with the dashboard.'); }
-      catch(e) { status(e.message); }
-    };
-    $('seat-grid').append(button);
+  for(const seat of model.seats){const option=document.createElement('option');option.value=seat.id;option.textContent='Desk '+seat.id.slice(0,2)+' · seat '+seat.id.slice(-1);$('seat-select').append(option);}
+  let choosing=false;
+  async function selectSeat(seat){
+    if(!session)return status('Join the room before choosing a seat.');
+    if(choosing)return;choosing=true;
+    const next={x:seat.x/1700,y:seat.y/1100,source:'manual'};
+    try{await sync({position:next});position=next;await refreshPhone();status('Seat shared. The temperature simulation updates with everyone’s preferences.');}
+    catch(e){status(e.message);}finally{choosing=false;}
   }
+  window.addEventListener('comfort-seat',event=>selectSeat(event.detail));
+  $('seat-select').onchange=()=>{const seat=model.seats.find(s=>s.id===$('seat-select').value);if(seat)selectSeat(seat);};
+  sharing(false);
   $('join-form').onsubmit = async event => {
     event.preventDefault(); room = $('room').value.trim(); $('join').disabled = true;
-    try { session = await api('join', {alias:$('alias').value,profile:profile(),consent:$('consent').checked}); sharing(true); status('Joined. Choose your seat below.'); $('position-label').textContent='Select a seat to place yourself in the classroom.'; }
+    try { const preference=profile(); session = await api('join', {alias:$('alias').value,profile:preference,consent:$('consent').checked}); session.profile=preference; sharing(true); await refreshPhone(); status('Joined. Choose your seat below.'); $('position-label').textContent='Select a seat to place yourself in the classroom.'; }
     catch(e) { sharing(false); status(e.message); }
   };
-  $('save').onclick = async () => { try { await sync({profile:profile()}); status('Preferences saved.'); } catch(e) { status(e.message); } };
+  $('save').onclick = async () => { try { await sync({profile:profile()}); await refreshPhone(); status('Preferences saved. Temperature simulation updated.'); } catch(e) { status(e.message); } };
   $('export').onclick = () => { try { download({schema:'common-climate-preferences/v1',units:'celsius',thermalComfort:profile()},'comfort-preferences.json'); status('Preference file prepared.'); } catch(e) { status(e.message); } };
   $('leave').onclick = async () => { try { await api('leave',{}); session=null; position=null; sharing(false); drawSelf(); status('Sharing stopped. Your record was removed.'); } catch(e) { status(e.message); } };
+  setInterval(() => { if(session) refreshPhone().catch(e=>status(e.message)); },2000);
   setInterval(() => { if(session) sync().catch(e => { $('connection').textContent='Connection lost'; status(e.message); }); },5000);
 }
