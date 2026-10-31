@@ -8,7 +8,9 @@ GitHub 私有仓库：[wlxin-nus/AIBE-Hackathon](https://github.com/wlxin-nus/AI
 
 后续按可运行或可验证的进度保存提交，再通过 `git push` 同步至 GitHub。`git commit` 保存本地版本，`git push` 上传提交；网站部署在配置 Vercel 项目后另行验证。
 
-2026-10-31 已完成 Vercel 的 GitHub 应用授权，访问范围仅包含 `AIBE-Hackathon`，Vercel 导入列表已能识别此仓库。Vercel 应用项目尚未创建，自动构建与线上地址尚未配置；当前推送只同步 GitHub。
+2026-10-31 已完成 Vercel 的 GitHub 应用授权，访问范围仅包含 `AIBE-Hackathon`，并创建空项目 [aibe-hackathon](https://vercel.com/xin919523529-7149/aibe-hackathon)，已连接此仓库。目前没有生产部署或预览部署。
+
+按用户“先不发布内容”的要求，`vercel.json` 中 `git.deploymentEnabled` 暂设为 `false`，所有分支的推送均不触发自动部署；commit/push 仍正常同步代码。正式上线获授权后，再确认应用目录、框架、构建与服务端环境变量，启用自动部署并验证首个公开版本。
 
 缓存、诊断输出、本机 Vercel 配置和密钥文件由忽略规则排除。推送前检查本次变更，不提交凭据。
 
